@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import { ThemeProvider } from 'styled-components';
+
+import theme from './theme';
+import GlobalStyle from './globals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Fragment>
+        <App />
+        <GlobalStyle />
+      </Fragment>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
