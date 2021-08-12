@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import queryString from "query-string"
-import styled from "styled-components"
 import { setSelectedMenu, getMoviesGenre, setHeader } from "../../actions"
 import NotFound from "../NotFound"
-import Pagination from "../Pagination"
 import SortBy from "../SortBy"
+import MoviesList from "./MoviesList"
 
-const MovieWrapper = styled.div`
-	padding: 2rem;
-`
-
-const MovieImg = styled.img`
-	width: 200px;
-	height: auto;
-`
 
 const Genre = ({ match, location }) => {
 	const genres = useSelector((state) => state.geral.genres)
@@ -36,24 +27,14 @@ const Genre = ({ match, location }) => {
 	if (!movies.results) {
 		return <div>Loading</div>
 	}
-	const baseUrl = base.images.base_url
 	return (
 		<div>
 			<SortBy changeSort={setsort} />
-			{renderMovies(movies.results, baseUrl)}
-			<Pagination />
+			<MoviesList base={base} movies={movies}/>
 		</div>
 	)
 }
 
-function renderMovies(movies, baseUrl) {
-	return movies.map((movie) => (
-		<MovieWrapper key={movie.id}>
-			{movie.original_title}
-			<MovieImg src={`${baseUrl}w780${movie.poster_path}`} />
-		</MovieWrapper>
-	))
-}
 
 function useFetchMoviesGenre(name, cb, params, sort) {
 	const dispatch = useDispatch()
