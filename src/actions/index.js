@@ -94,3 +94,12 @@ export const setHeader = title => {
     payload: title,
   };
 };
+
+export const getMovie = (id) => async (dispatch) => {
+	const res = await tmdbAPI.get(`/movie/${id}`)
+	dispatch({
+		type: TYPES.FETCH_MOVIE,
+		payload: res.data,
+	})
+	return res.data
+}
