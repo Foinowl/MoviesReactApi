@@ -9,6 +9,7 @@ import {
 	faHeart,
 	faDotCircle,
 } from "@fortawesome/free-solid-svg-icons"
+import { useSelector } from 'react-redux'
 
 const StyledLink = styled(Link)`
 	padding: 1rem 2rem;
@@ -42,9 +43,17 @@ function renderIcon(title) {
 	}
 }
 
-const MenuItem = ({ title, selected }) => {
+const MenuItem = ({ title }) => {
+	const selectedItem = useSelector((store) => store.geral.selected)
 	return (
-		<StyledLink to="/aa" selected={selected}>
+		<StyledLink
+			to={`/${title}`}
+			selected={
+				title === selectedItem || (title === "Popular" && !selectedItem)
+					? true
+					: false
+			}
+		>
 			<FontAwesomeIcon
 				icon={renderIcon(title)}
 				size="1x"
