@@ -19,32 +19,18 @@ const Genre = ({ match }) => {
 	const selected = useSelector((state) => state.geral.selected)
 	const movies = useSelector((state) => state.movies)
 
-	const pa = useSelector((state) => state)
-	console.log("pa", pa);
-
-	if (!genres) {
-		return <div>Loading Initial info</div>
-	}
-
-	
 	useSetSelected(match.params.name, setSelectedMenu, genres)
 	useFetchMoviesGenre(match.params.name, getMoviesGenre, genres)
 
-
-  	if (!selected) {
+	if (!selected) {
 		return <NotFound />
 	}
 
 	if (!movies.results) {
 		return <div>Loading</div>
 	}
-	  const baseUrl = base.images.base_url
-		return (
-			<div>
-				Genres Container
-				{renderMovies(movies.results, baseUrl)}
-			</div>
-		)
+	const baseUrl = base.images.base_url
+	return <div>{renderMovies(movies.results, baseUrl)}</div>
 }
 
 function renderMovies(movies, baseUrl) {
@@ -62,7 +48,6 @@ function useFetchMoviesGenre(name, cb, genres) {
 		dispatch(cb(name))
 	}, [genres, name])
 }
-
 
 function useSetSelected(name, cb, genres) {
 	const dispatch = useDispatch()

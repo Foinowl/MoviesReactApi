@@ -1,7 +1,6 @@
 import * as TYPES from "./types"
 import tmdbAPI from "../api/tmdb"
 
-
 // get the config object from the API
 export const getConfig = () => async (dispatch) => {
 	const res = await tmdbAPI.get("/configuration")
@@ -12,15 +11,14 @@ export const getConfig = () => async (dispatch) => {
 	})
 }
 
-
 // Get genres from API
-export const getGenres = () => async dispatch => {
-  const res = await tmdbAPI.get('/genre/movie/list');
-  dispatch({
-    type: TYPES.GET_GENRES,
-    payload: res.data,
-  });
-};
+export const getGenres = () => async (dispatch) => {
+	const res = await tmdbAPI.get("/genre/movie/list")
+	dispatch({
+		type: TYPES.GET_GENRES,
+		payload: res.data,
+	})
+}
 
 export const setSelectedMenu = (name) => {
 	return {
@@ -30,8 +28,8 @@ export const setSelectedMenu = (name) => {
 }
 
 export const getMoviesGenre = (name) => async (dispatch, getState) => {
-	const genres = getState().geral.genres
-	if (!genres) {
+	const { selected, genres } = getState().geral
+	if (!selected) {
 		return
 	}
 	const genreId = genres
@@ -48,3 +46,16 @@ export const getMoviesGenre = (name) => async (dispatch, getState) => {
 		payload: res.data,
 	})
 }
+
+// Get movies discover
+export const getMoviesDiscover = name => async (dispatch, getState) => {
+  const { selected } = getState().geral;
+  if (!selected) {
+    return;
+  }
+  const res = await tmdbAPI.get(`/movie/${name}`);
+  dispatch({
+    type: TYPES.FETCH_MOVIES_DISCOVER,
+    payload: res.data,
+  });
+};

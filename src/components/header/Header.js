@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from 'react-redux'
 import styled from "styled-components"
 
 import SearchBar from "./SearchBar"
@@ -18,9 +19,10 @@ const Title = styled.h1`
 `
 
 const Header = () => {
+	const selected = useSelector(store => store.geral.selected)
 	return (
 		<Wrapper>
-			<Title>Top Rated</Title>
+			<Title>{selected}</Title>
 			<SearchBar />
 		</Wrapper>
 	)

@@ -33,8 +33,8 @@ function useFetchGenres(cb) {
 
 function renderList(genres) {
 	return genres.map((genre) => (
-		<LinkWrap to={`/genres/${genre.name}`}>
-			<MenuItem key={genre.id} title={genre.name} genres />
+		<LinkWrap to={`/genres/${genre.name}`} key={genre.id}>
+			<MenuItem title={genre.name} genres />
 		</LinkWrap>
 	))
 }
