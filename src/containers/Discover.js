@@ -17,7 +17,9 @@ const Discover = ({ match, location }) => {
 
 	useEffect(() => {
 		dispatch(setSelectedMenu(match.params.name))
-		return () => dispatch(setSelectedMenu())
+		return () => {
+			dispatch(setSelectedMenu())
+				}
 	}, [match.params.name])
 
 	useFetchMoviesDiscover(match.params.name, getMoviesDiscover, params)
@@ -45,3 +47,5 @@ function useFetchMoviesDiscover(name, cb, params) {
 }
 
 export default Discover
+
+

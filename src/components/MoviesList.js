@@ -23,7 +23,6 @@ const MoviesList = ({movies, base}) => {
 }
 
 function renderMovies(movies, baseUrl) {
-	console.log(movies);
 	return movies.map((movie) => (
 		<Link to={`/movie/${movie.id}`} key={movie.id}>
 			<MovieWrapper>
