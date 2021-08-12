@@ -7,9 +7,9 @@ import { getConfig } from "../actions"
 
 import Sidebar from "../components/sidebar/Sidebar"
 import Header from "../components/header/Header"
-import MoviesList from "../components/MoviesList/MoviesList"
+// import MoviesList from "../components/MoviesList/MoviesList"
 import Home from "../components/Home"
-import Category from "../components/MoviesList/Category"
+import Genre from "../components/MoviesList/Genre"
 import NotFound from "../components/NotFound"
 
 
@@ -37,7 +37,7 @@ const App = () => {
 						<Header />
 						<Switch>
 							<Route path="/" exact component={Home} />
-							<Route path="/category/:name" exact component={Category} />
+							<Route path="/genres/:name" exact component={Genre} />
 							<Route component={NotFound} />
 						</Switch>
 					</ContentWrapper>

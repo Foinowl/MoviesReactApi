@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { useDispatch, useSelector } from 'react-redux'
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.div`
 	padding: 1rem 2rem;
 	font-weight: 600;
 	font-size: 1.2rem;
@@ -50,7 +50,6 @@ const MenuItem = ({ title }) => {
 
 	return (
 		<StyledLink
-			to={`/category/${title}`}
 			onClick={() => dispatch(setSelectedMenu(title))}
 			selected={title === selectedItem ? true : false}
 		>

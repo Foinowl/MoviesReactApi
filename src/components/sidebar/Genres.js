@@ -1,11 +1,14 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-
+import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getGenres } from "../../actions"
 
 import MenuItem from "./MenuItem"
 
+const LinkWrap = styled(Link)`
+	text-decoration: none;
+`
 
 const Genres = () => {
 	const genres = useSelector((store) => store.geral.genres)
@@ -30,7 +33,9 @@ function useFetchGenres(cb) {
 
 function renderList(genres) {
 	return genres.map((genre) => (
-		<MenuItem key={genre.id} title={genre.name} genres />
+		<LinkWrap to={`/genres/${genre.name}`}>
+			<MenuItem key={genre.id} title={genre.name} genres />
+		</LinkWrap>
 	))
 }
 
