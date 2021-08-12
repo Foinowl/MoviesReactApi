@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import queryString from "query-string"
 
-import { setSelectedMenu, getMoviesDiscover } from "../../actions"
+import { setSelectedMenu, getMoviesDiscover, setHeader } from "../../actions"
 import NotFound from "../NotFound"
 import Pagination from "../Pagination"
 
@@ -25,7 +25,12 @@ const Discover = ({ match, location }) => {
 	const staticCategories = useSelector((store) => store.geral.staticCategories)
 
 	const movies = useSelector((store) => store.movies)
-	useSetSelected(match.params.name, setSelectedMenu, staticCategories)
+	useSetSelected(
+		match.params.name,
+		setSelectedMenu,
+		staticCategories,
+		setHeader
+	)
 
 	useFetchMoviesDiscover(match.params.name, getMoviesDiscover, params)
 
@@ -56,12 +61,13 @@ function renderMovies(movies, baseUrl) {
 	))
 }
 
-function useSetSelected(name, cb, staticCategories) {
+function useSetSelected(name, cb, staticCategories, setHeader) {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
 		if (staticCategories.find((el) => el === name)) {
 			dispatch(cb(name))
+			dispatch(setHeader(name))
 		}
 	}, [name])
 }

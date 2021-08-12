@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector} from "react-redux"
-import { BrowserRouter, Switch, Route } from "react-router-dom"
+import { Router, Switch, Route } from "react-router-dom"
+import history from "../history"
 import styled from "styled-components"
 
 import { getConfig, getGenres } from "../actions"
@@ -8,6 +9,7 @@ import { getConfig, getGenres } from "../actions"
 import Sidebar from "../components/sidebar/Sidebar"
 import Header from "../components/header/Header"
 import Discover from "../components/MoviesList/Discover"
+import Search from "../components/MoviesList/Search"
 import Genre from "../components/MoviesList/Genre"
 import Home from "../components/Home"
 import NotFound from "../components/NotFound"
@@ -34,7 +36,7 @@ const App = () => {
 
 
 	  return base && genres ? (
-			<BrowserRouter>
+			<Router history={history}>
 				<React.Fragment>
 					<MainWrapper>
 						<Sidebar />
@@ -44,12 +46,13 @@ const App = () => {
 								<Route path="/" exact component={Home} />
 								<Route path="/genres/:name" exact component={Genre} />
 								<Route path="/discover/:name" exact component={Discover} />
+								<Route path="/search/:query" exact component={Search} />
 								<Route component={NotFound} />
 							</Switch>
 						</ContentWrapper>
 					</MainWrapper>
 				</React.Fragment>
-			</BrowserRouter>
+			</Router>
 		) : (
 			<div>Laoding</div>
 		)

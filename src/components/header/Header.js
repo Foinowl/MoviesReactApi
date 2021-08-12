@@ -19,10 +19,10 @@ const Title = styled.h1`
 `
 
 const Header = () => {
-	const selected = useSelector(store => store.geral.selected)
+	const header = useSelector((store) => store.geral.header)
 	return (
 		<Wrapper>
-			<Title>{selected}</Title>
+			<Title>{header}</Title>
 			<SearchBar />
 		</Wrapper>
 	)
