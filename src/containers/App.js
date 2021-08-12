@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useDispatch} from "react-redux"
 import styled from "styled-components"
 
-import { getConf } from "../actions"
+import { getConfig } from "../actions"
 
 import Sidebar from "../components/sidebar/Sidebar"
 import Header from "../components/header/Header"
@@ -20,7 +20,7 @@ const App = () => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(getConf())
+		dispatch(getConfig())
 	}, [])
 	return (
 		<React.Fragment>

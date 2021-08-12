@@ -1,7 +1,9 @@
 import * as TYPES from "./types"
 import tmdbAPI from "../api/tmdb"
 
-export const getConf = () => async (dispatch) => {
+
+// get the config object from the API
+export const getConfig = () => async (dispatch) => {
 	const res = await tmdbAPI.get("/configuration")
 	console.log(res)
 	dispatch({
@@ -9,3 +11,13 @@ export const getConf = () => async (dispatch) => {
 		payload: res.data,
 	})
 }
+
+
+// Get genres from API
+export const getGenres = () => async dispatch => {
+  const res = await tmdbAPI.get('/genre/movie/list');
+  dispatch({
+    type: TYPES.GET_GENRES,
+    payload: res.data,
+  });
+};
