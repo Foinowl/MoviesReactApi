@@ -5,23 +5,22 @@ import SearchBar from "./SearchBar"
 
 const Wrapper = styled.div`
 	display: flex;
-	padding: 1rem 2rem;
-	height: 6rem;
-	background-color: #444;
+	padding: 1rem;
 	align-items: center;
-	color: var(--color-primary-dark);
+	color: var(--color-primary);
 `
 
 const Title = styled.h1`
-	font-size: 2rem;
-	font-weight: 500;
+	font-size: 2.2rem;
+	font-weight: 700;
 	margin-right: auto;
+	letter-spacing: -0.5px;
 `
 
 const Header = () => {
 	return (
 		<Wrapper>
-			<Title>Title</Title>
+			<Title>Top Rated</Title>
 			<SearchBar />
 		</Wrapper>
 	)

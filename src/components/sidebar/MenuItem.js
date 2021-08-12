@@ -1,4 +1,6 @@
 import React from "react"
+import { Link } from "react-router-dom"
+
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -8,8 +10,8 @@ import {
 	faDotCircle,
 } from "@fortawesome/free-solid-svg-icons"
 
-const ItemWrapper = styled.div`
-	padding: 0.5rem 1rem;
+const StyledLink = styled(Link)`
+	padding: 1rem 2rem;
 	font-weight: 600;
 	font-size: 1.2rem;
 	opacity: ${(props) => (props.selected ? "1" : ".6")};
@@ -17,10 +19,16 @@ const ItemWrapper = styled.div`
 		props.selected
 			? "var(--color-primary-dark)"
 			: "var(--color-primary-light)"};
+	border: 1px solid var(--border-color);
+	border: ${(props) =>
+		props.selected ? "1px solid var(--border-color)" : "none"};
+	border-radius: 2rem;
 	display: flex;
 	align-items: center;
+	text-decoration: none;
+	width: 100%;
+	cursor: pointer;
 `
-
 function renderIcon(title) {
 	switch (title) {
 		case "Popular":
@@ -36,14 +44,14 @@ function renderIcon(title) {
 
 const MenuItem = ({ title, selected }) => {
 	return (
-		<ItemWrapper selected={selected}>
+		<StyledLink to="/aa" selected={selected}>
 			<FontAwesomeIcon
 				icon={renderIcon(title)}
 				size="1x"
 				style={{ marginRight: "10px" }}
 			/>
 			{title}
-		</ItemWrapper>
+		</StyledLink>
 	)
 }
 

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react"
 import { useDispatch} from "react-redux"
+import { BrowserRouter } from "react-router-dom"
+
 import styled from "styled-components"
 
 import { getConfig } from "../actions"
@@ -14,6 +16,7 @@ const MainWrapper = styled.div`
 
 const ContentWrapper = styled.div`
 	width: 100%;
+	padding: 2rem 4rem;
 `
 
 const App = () => {
@@ -23,14 +26,16 @@ const App = () => {
 		dispatch(getConfig())
 	}, [])
 	return (
-		<React.Fragment>
-			<MainWrapper>
-				<Sidebar />
-				<ContentWrapper>
-					<Header />
-				</ContentWrapper>
-			</MainWrapper>
-		</React.Fragment>
+		<BrowserRouter>
+			<React.Fragment>
+				<MainWrapper>
+					<Sidebar />
+					<ContentWrapper>
+						<Header />
+					</ContentWrapper>
+				</MainWrapper>
+			</React.Fragment>
+		</BrowserRouter>
 	)
 }
 
