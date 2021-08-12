@@ -19,7 +19,7 @@
     "react-lazyload": "^2.5.0",
     "react-modal-video": "^1.2.1",
     "react-rating": "^1.6.2",
-    "react-redux": "^6.0.1",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
     "react-scroll": "^1.7.11",
