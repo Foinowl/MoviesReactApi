@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import queryString from "query-string"
-import { setSelectedMenu, getMoviesGenre, setHeader } from "../../actions"
-import NotFound from "../NotFound"
-import SortBy from "../SortBy"
-import MoviesList from "./MoviesList"
+import { setSelectedMenu, getMoviesGenre, setHeader } from "../actions"
+import SortBy from "../components/SortBy"
+import MoviesList from "../components/MoviesList"
 
 
 const Genre = ({ match, location }) => {
-	const genres = useSelector((state) => state.geral.genres)
+	const dispatch = useDispatch()
+
 	const base = useSelector((state) => state.geral.base)
-	const selected = useSelector((state) => state.geral.selected)
 	const movies = useSelector((state) => state.movies)
 
 	const params = queryString.parse(location.search)
 
 	const [sort, setsort] = useState("popularity.desc")
 
-	useSetSelected(match.params.name, setSelectedMenu, genres, setHeader)
+	useEffect(() => {
+		dispatch(setSelectedMenu(match.params.name))
+		return () => dispatch(setSelectedMenu())
+	}, [match.params.name])
 	useFetchMoviesGenre(match.params.name, getMoviesGenre, params, sort)
 
-	if (!selected) {
-		return <NotFound />
-	}
 
-	if (!movies.results) {
+
+	if (Object.entries(movies).length === 0) {
 		return <div>Loading</div>
 	}
 	return (

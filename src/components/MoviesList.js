@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import Pagination from "../Pagination"
+import Pagination from "./Pagination"
 
 const MovieWrapper = styled.div`
 	padding: 2rem;

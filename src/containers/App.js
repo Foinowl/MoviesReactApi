@@ -6,15 +6,15 @@ import styled from "styled-components"
 
 import { getConfig, getGenres } from "../actions"
 
-import Sidebar from "../components/sidebar/Sidebar"
-import Header from "../components/header/Header"
-import Discover from "../components/movies/Discover"
-import Search from "../components/movies/Search"
-import Genre from "../components/movies/Genre"
-import Movie from "../components/singleMovie/Movie"
-import Home from "../components/Home"
-import NotFound from "../components/NotFound"
+import Sidebar from "./Sidebar"
+import Discover from "./Discover"
+import Genre from "./Genre"
+import Search from "./Search"
+import Movie from "./Movie"
 
+import NotFound from "../components/NotFound"
+import Home from "../components/Home"
+import Header from "../components/Header"
 
 const MainWrapper = styled.div`
 	display: flex;
@@ -49,6 +49,7 @@ const App = () => {
 								<Route path="/discover/:name" exact component={Discover} />
 								<Route path="/search/:query" exact component={Search} />
 								<Route path="/movie/:id" exact component={Movie} />
+								<Route path="/404" component={NotFound} />
 								<Route component={NotFound} />
 							</Switch>
 						</ContentWrapper>
@@ -56,7 +57,7 @@ const App = () => {
 				</React.Fragment>
 			</Router>
 		) : (
-			<div>Laoding</div>
+			<div>Loding</div>
 		)
 }
 

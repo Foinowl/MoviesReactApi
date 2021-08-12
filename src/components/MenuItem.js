@@ -1,6 +1,4 @@
 import React from "react"
-import { Link } from "react-router-dom"
-import { setSelectedMenu } from "../../actions"
 
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -10,9 +8,8 @@ import {
 	faHeart,
 	faDotCircle,
 } from "@fortawesome/free-solid-svg-icons"
-import { useDispatch, useSelector } from 'react-redux'
 
-const StyledLink = styled.div`
+const StyledItem = styled.div`
 	padding: 1rem 2rem;
 	font-weight: 600;
 	font-size: 1.2rem;
@@ -44,22 +41,16 @@ function renderIcon(title) {
 	}
 }
 
-const MenuItem = ({ title }) => {
-	const selectedItem = useSelector((store) => store.geral.selected)
-	const dispatch = useDispatch()
-
+const MenuItem = ({ title, selected }) => {
 	return (
-		<StyledLink
-			onClick={() => dispatch(setSelectedMenu(title))}
-			selected={title === selectedItem ? true : false}
-		>
+		<StyledItem selected={selected}>
 			<FontAwesomeIcon
 				icon={renderIcon(title)}
 				size="1x"
 				style={{ marginRight: "10px" }}
 			/>
 			{title}
-		</StyledLink>
+		</StyledItem>
 	)
 }
 

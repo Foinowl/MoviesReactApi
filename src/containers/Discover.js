@@ -3,33 +3,27 @@ import { useDispatch, useSelector } from "react-redux"
 
 import queryString from "query-string"
 
-import { setSelectedMenu, getMoviesDiscover, setHeader } from "../../actions"
-import NotFound from "../NotFound"
-import MoviesList from "./MoviesList"
+import { setSelectedMenu, getMoviesDiscover } from "../actions"
+import MoviesList from "../components/MoviesList"
 
 
 const Discover = ({ match, location }) => {
+	const dispatch = useDispatch()
+
 	const params = queryString.parse(location.search)
 
-	const selected = useSelector((store) => store.geral.selected)
 	const base = useSelector((store) => store.geral.base)
-	const staticCategories = useSelector((store) => store.geral.staticCategories)
-
 	const movies = useSelector((store) => store.movies)
-	useSetSelected(
-		match.params.name,
-		setSelectedMenu,
-		staticCategories,
-		setHeader
-	)
+
+	useEffect(() => {
+		dispatch(setSelectedMenu(match.params.name))
+		return () => dispatch(setSelectedMenu())
+	}, [match.params.name])
 
 	useFetchMoviesDiscover(match.params.name, getMoviesDiscover, params)
 
-	if (!selected) {
-		return <NotFound />
-	}
 
-	if (!movies.results) {
+	if (Object.entries(movies).length === 0) {
 		return <div>Loading</div>
 	}
 
@@ -39,21 +33,6 @@ const Discover = ({ match, location }) => {
 			<MoviesList base={base} movies={movies} />
 		</div>
 	)
-}
-
-function useSetSelected(name, cb, staticCategories, setHeader) {
-	const dispatch = useDispatch()
-
-	useEffect(() => {
-		if (staticCategories.find((el) => el === name)) {
-			dispatch(cb(name))
-			dispatch(setHeader(name))
-		}
-		return () => {
-				dispatch(cb(""))
-				dispatch(setHeader(""))
-			}
-	}, [name])
 }
 
 
