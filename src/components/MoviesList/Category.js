@@ -1,20 +1,57 @@
-import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { setSelectedMenu } from '../../actions';
-import NotFound from '../NotFound';
-import styled from 'styled-components';
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setSelectedMenu, getMoviesGenre } from "../../actions"
+import NotFound from "../NotFound"
+import styled from "styled-components"
 
-const Category = ({ match}) => {
-  useSetSelected(match.params.name, setSelectedMenu);
-  return <div>{match.params.name}</div>;
-};
+const MovieWrapper = styled.div`
+	padding: 2rem;
+`
 
+const MovieImg = styled.img`
+	width: 200px;
+	height: auto;
+`
+
+const Category = ({
+	match,
+	movies,
+}) => {
+	const genres = useSelector((state) => state.geral.genres)
+	const base = useSelector((state) => state.geral.base)
+
+	useSetSelected(match.params.name, setSelectedMenu)
+	useFetchMoviesGenre(match.params.name, getMoviesGenre, genres)
+
+	if (!movies.results) {
+		return <div>Loading</div>
+	}
+	console.log(movies.results)
+	const baseUrl = base.images.base_url
+	return <div>{renderMovies(movies.results, baseUrl)}</div>
+}
+
+function renderMovies(movies, baseUrl) {
+	return movies.map((movie) => (
+		<MovieWrapper key={movie.id}>
+			{movie.original_title}
+			<MovieImg src={`${baseUrl}w780${movie.poster_path}`} />
+		</MovieWrapper>
+	))
+}
+
+function useFetchMoviesGenre(name, cb, genres) {
+	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(cb(name))
+	}, [genres, name])
+}
 
 function useSetSelected(name, cb) {
 	const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(cb(name))
-  }, [name]);
+	useEffect(() => {
+		dispatch(cb(name))
+	}, [name])
 }
 
 export default Category
