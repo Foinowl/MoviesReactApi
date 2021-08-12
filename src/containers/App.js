@@ -8,6 +8,10 @@ import { getConfig } from "../actions"
 import Sidebar from "../components/sidebar/Sidebar"
 import Header from "../components/header/Header"
 import MoviesList from "../components/MoviesList/MoviesList"
+import Home from "../components/Home"
+import Category from "../components/MoviesList/Category"
+import NotFound from "../components/NotFound"
+
 
 const MainWrapper = styled.div`
 	display: flex;
@@ -28,12 +32,13 @@ const App = () => {
 		<BrowserRouter>
 			<React.Fragment>
 				<MainWrapper>
-					<Route path="/" component={Sidebar} />
+					<Sidebar />
 					<ContentWrapper>
-						<Route path="/" component={Header} />
+						<Header />
 						<Switch>
-							<Route path="/" exact component={MoviesList} />
-							<Route path="/:category" exact component={MoviesList} />
+							<Route path="/" exact component={Home} />
+							<Route path="/category/:name" exact component={Category} />
+							<Route component={NotFound} />
 						</Switch>
 					</ContentWrapper>
 				</MainWrapper>

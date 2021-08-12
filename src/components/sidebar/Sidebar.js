@@ -36,7 +36,7 @@ const MenuWrapper = styled.div`
 `
 
 const Sidebar = ({ location}) => {
-	useSetSelected(location, setSelectedMenu)
+
 	return (
 		<Wrapper>
 			<Logo />
@@ -50,15 +50,6 @@ const Sidebar = ({ location}) => {
 			</MenuWrapper>
 		</Wrapper>
 	)
-}
-
-function useSetSelected(location, cb) {
-	const dispatch = useDispatch()
-
-	useEffect(() => {
-		const trimmedPath = location.pathname.replace(/\//g, "")
-		dispatch(cb(trimmedPath))
-	}, [location.pathname])
 }
 
 export default Sidebar
