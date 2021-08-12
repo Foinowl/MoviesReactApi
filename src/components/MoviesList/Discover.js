@@ -1,8 +1,12 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+
+import styled from "styled-components"
+import queryString from "query-string"
+
 import { setSelectedMenu, getMoviesDiscover } from "../../actions"
 import NotFound from "../NotFound"
-import styled from "styled-components"
+import Pagination from '../pagination/Pagination'
 
 const MovieWrapper = styled.div`
 	padding: 2rem;
@@ -13,17 +17,17 @@ const MovieImg = styled.img`
 	height: auto;
 `
 
-const Discover = ({
-	match
-}) => {
-	const selected = useSelector(store => store.geral.selected)
+const Discover = ({ match, location }) => {
+	const params = queryString.parse(location.search)
+
+	const selected = useSelector((store) => store.geral.selected)
 	const base = useSelector((store) => store.geral.base)
 	const staticCategories = useSelector((store) => store.geral.staticCategories)
 
 	const movies = useSelector((store) => store.movies)
 	useSetSelected(match.params.name, setSelectedMenu, staticCategories)
 
-	useFetchMoviesDiscover(match.params.name, getMoviesDiscover)
+	useFetchMoviesDiscover(match.params.name, getMoviesDiscover, params)
 
 	if (!selected) {
 		return <NotFound />
@@ -35,7 +39,12 @@ const Discover = ({
 
 	const baseUrl = base.images.base_url
 
-	return <div>{renderMovies(movies.results, baseUrl)}</div>
+	return (
+		<div>
+			{renderMovies(movies.results, baseUrl)}
+			<Pagination />
+		</div>
+	)
 }
 
 function renderMovies(movies, baseUrl) {
@@ -57,13 +66,13 @@ function useSetSelected(name, cb, staticCategories) {
 	}, [name])
 }
 
-function useFetchMoviesDiscover(name, cb) {
+
+function useFetchMoviesDiscover(name, cb, params) {
 	const dispatch = useDispatch()
 	const query = name.replace(/\s+/g, "_").toLowerCase()
-	useEffect(() => {
-		dispatch(cb(query))
-	}, [query])
+	useEffect(() => {		
+		dispatch(cb(query, params.page))
+	}, [query, params.page])
 }
-
 
 export default Discover
