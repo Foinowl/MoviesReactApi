@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-
+import { Link } from "react-router-dom"
 import Pagination from "../Pagination"
 
 const MovieWrapper = styled.div`
@@ -25,10 +25,12 @@ const MoviesList = ({movies, base}) => {
 function renderMovies(movies, baseUrl) {
 	console.log(movies);
 	return movies.map((movie) => (
-		<MovieWrapper key={movie.id}>
-			{movie.original_title}
-			<MovieImg src={`${baseUrl}w780${movie.poster_path}`} />
-		</MovieWrapper>
+		<Link to={`/movie/${movie.id}`} key={movie.id}>
+			<MovieWrapper>
+				{movie.original_title}
+				<MovieImg src={`${baseUrl}w780${movie.poster_path}`} />
+			</MovieWrapper>
+		</Link>
 	))
 }
 

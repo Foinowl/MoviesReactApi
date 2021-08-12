@@ -17,8 +17,7 @@ const Search = ({
 
 	const movies = useSelector(store => store.movies)
 
-	useRemoveSelected(setSelectedMenu)
-	useSetHeader(query, setHeader)
+	useSetHeader(query, setHeader, setSelectedMenu)
 	useFetchMoviesSearch(query, getMoviesSearch, params)
 
 	if (!movies.results) {
@@ -33,11 +32,15 @@ const Search = ({
 }
 
 
-function useSetHeader(query, cb) {
+function useSetHeader(query, cb, setSelectedMenu) {
 	const dispatch = useDispatch()
 	useEffect(() => {
 		const title = `Search results for: ${query}`
 		dispatch(cb(title))
+		return () => {
+			dispatch(cb(""))
+			dispatch(setSelectedMenu())
+		}
 	}, [query])
 }
 
@@ -46,13 +49,6 @@ function useFetchMoviesSearch(query, cb, params) {
 	useEffect(() => {
 		dispatch(cb(query, params.page))
 	}, [query, params.page])
-}
-
-function useRemoveSelected(cb) {
-	const dispatch = useDispatch()
-	useEffect(() => {
-		dispatch(cb())
-	}, [])
 }
 
 

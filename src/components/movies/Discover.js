@@ -49,6 +49,10 @@ function useSetSelected(name, cb, staticCategories, setHeader) {
 			dispatch(cb(name))
 			dispatch(setHeader(name))
 		}
+		return () => {
+				dispatch(cb(""))
+				dispatch(setHeader(""))
+			}
 	}, [name])
 }
 
