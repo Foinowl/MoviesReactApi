@@ -4,13 +4,14 @@ import queryString from "query-string"
 import { setSelectedMenu, getMoviesGenre, setHeader } from "../actions"
 import SortBy from "../components/SortBy"
 import MoviesList from "../components/MoviesList"
-
+import Loader from "../components/Loader"
 
 const Genre = ({ match, location }) => {
 	const dispatch = useDispatch()
 
-	const base = useSelector((state) => state.geral.base)
+	const geral = useSelector((state) => state.geral)
 	const movies = useSelector((state) => state.movies)
+	const { base_url } = geral.base.images
 
 	const params = queryString.parse(location.search)
 
@@ -25,13 +26,13 @@ const Genre = ({ match, location }) => {
 
 
 	if (Object.entries(movies).length === 0) {
-		return <div>Loading</div>
+		return <Loader />
 	}
-	return (
-		<div>
+  return (
+		<React.Fragment>
 			<SortBy changeSort={setsort} />
-			<MoviesList base={base} movies={movies}/>
-		</div>
+			<MoviesList movies={movies} baseUrl={base_url} />
+		</React.Fragment>
 	)
 }
 

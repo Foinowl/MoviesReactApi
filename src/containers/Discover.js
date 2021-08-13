@@ -5,15 +5,17 @@ import queryString from "query-string"
 
 import { setSelectedMenu, getMoviesDiscover } from "../actions"
 import MoviesList from "../components/MoviesList"
-
+import Loader from "../components/Loader"
 
 const Discover = ({ match, location }) => {
 	const dispatch = useDispatch()
+	
+	const geral = useSelector((store) => store.geral)
+	const movies = useSelector((store) => store.movies)
 
 	const params = queryString.parse(location.search)
+	const { base_url } = geral.base.images
 
-	const base = useSelector((store) => store.geral.base)
-	const movies = useSelector((store) => store.movies)
 
 	useEffect(() => {
 		dispatch(setSelectedMenu(match.params.name))
@@ -26,15 +28,11 @@ const Discover = ({ match, location }) => {
 
 
 	if (Object.entries(movies).length === 0) {
-		return <div>Loading</div>
+		return <Loader />
 	}
 
 
-	return (
-		<div>
-			<MoviesList base={base} movies={movies} />
-		</div>
-	)
+	return <MoviesList movies={movies} baseUrl={base_url} />
 }
 
 
