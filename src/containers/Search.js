@@ -24,13 +24,13 @@ const Search = ({ match, location}) => {
 	}, [query])
 	useFetchMoviesSearch(query, getMoviesSearch, params)
 
-	if (Object.entries(movies).length === 0) {
+	if (movies.loading) {
 		return <Loader />
 	} else if (movies.total_results === 0) {
 		return <div>No results</div>
-	}   else {
-    	return <MoviesList movies={movies} baseUrl={base_url} />;
-  }
+	} else {
+		return <MoviesList movies={movies} baseUrl={base_url} />
+	}
 }
 
 function useFetchMoviesSearch(query, getMoviesSearch, params) {

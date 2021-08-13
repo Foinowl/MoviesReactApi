@@ -27,10 +27,9 @@ const Discover = ({ match, location }) => {
 	useFetchMoviesDiscover(match.params.name, getMoviesDiscover, params)
 
 
-	if (Object.entries(movies).length === 0) {
+	if (movies.loading) {
 		return <Loader />
 	}
-
 
 	return <MoviesList movies={movies} baseUrl={base_url} />
 }

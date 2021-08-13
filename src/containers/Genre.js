@@ -25,7 +25,7 @@ const Genre = ({ match, location }) => {
 
 
 
-	if (Object.entries(movies).length === 0) {
+	if (movies.loading) {
 		return <Loader />
 	}
   return (

@@ -7,6 +7,7 @@ import { getMovie} from "../actions"
 import history from "../history"
 
 import Credits from "../components/Credits"
+import Loader from "../components/Loader"
 
 const MovieWrapper = styled.div`
 	padding: 2rem;
@@ -27,8 +28,8 @@ const Movie = ({ match }) => {
 		dispatch(getMovie(match.params.id))
 	}, [match.params.id])
 
-	if (Object.entries(movie).length === 0) {
-		return <div> Loading...</div>
+	if (movie.loading) {
+		return <Loader />
 	}
 
 	function renderBack() {

@@ -4,6 +4,7 @@ import styled from "styled-components"
 import history from "../history"
 
 import { getPerson } from "../actions"
+import Loader from "../components/Loader"
 
 const ImgWrapper = styled.img`
 	width: 200px;
@@ -20,8 +21,8 @@ const Cast = ({ match }) => {
 		dispatch(getPerson(match.params.id))
 	}, [match.params.id])
 
-	if (Object.entries(person).length === 0) {
-		return <div> Loading...</div>
+  	if (person.loading) {
+		return <Loader />
 	}
 
 	function renderBack() {
