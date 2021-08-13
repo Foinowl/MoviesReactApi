@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector} from "react-redux"
-import { Router, Switch, Route } from "react-router-dom"
+import { Router, Switch, Route, Redirect } from "react-router-dom"
 import history from "../history"
 import styled from "styled-components"
 
@@ -45,6 +45,11 @@ const App = () => {
 						<ContentWrapper>
 							<Header />
 							<Switch>
+								<Route
+									path="/"
+									exact
+									render={() => <Redirect from="/" to="/discover/Popular" />}
+								/>
 								<Route path="/" exact component={Home} />
 								<Route path="/genres/:name" exact component={Genre} />
 								<Route path="/discover/:name" exact component={Discover} />

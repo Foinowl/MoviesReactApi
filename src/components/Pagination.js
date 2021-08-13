@@ -3,15 +3,14 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
-const Pagination = () => {
-	const { page, total_pages } = useSelector(store => store.movies)
+const Pagination = ({ movies }) => {
+	const { page, total_pages } = movies
 
-console.log("page", page);
+	console.log("page", page)
 	// On first page, render page 2 button
 	if (page < total_pages && page === 1) {
 		return (
 			<div>
-				On page 1, render page 2 only
 				<Link to={`?page=${page + 1}`}>Page {page + 1}</Link>
 			</div>
 		)
@@ -21,7 +20,6 @@ console.log("page", page);
 	else if (page < total_pages) {
 		return (
 			<div>
-				On page whatever, render prev e next
 				<Link to={`?page=${page - 1}`}>Page {page - 1}</Link>
 				<Link to={`?page=${page + 1}`}>Page {page + 1}</Link>
 			</div>
