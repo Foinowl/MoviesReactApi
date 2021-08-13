@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import queryString from "query-string"
 
-import { setHeader, getMoviesSearch } from "../actions"
+import { setHeader, getMoviesSearch, clearMovies } from "../actions"
 import MoviesList from "../components/MoviesList"
 import Loader from "../components/Loader"
 
@@ -22,7 +22,7 @@ const Search = ({ match, location}) => {
 			dispatch(setHeader())
 		}
 	}, [query])
-	useFetchMoviesSearch(query, getMoviesSearch, params)
+	useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies)
 
 	if (movies.loading) {
 		return <Loader />
@@ -33,10 +33,11 @@ const Search = ({ match, location}) => {
 	}
 }
 
-function useFetchMoviesSearch(query, getMoviesSearch, params) {
+function useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies) {
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(getMoviesSearch(query, params.page))
+		return () => dispatch(clearMovies())
 	}, [query, params.page])
 }
 
