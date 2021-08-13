@@ -16,6 +16,7 @@ import Cast from "./Cast"
 import NotFound from "../components/NotFound"
 import Home from "../components/Home"
 import Header from "../components/Header"
+import Loader from "../components/Loader"
 
 const MainWrapper = styled.div`
 	display: flex;
@@ -24,6 +25,13 @@ const MainWrapper = styled.div`
 const ContentWrapper = styled.div`
 	width: 100%;
 	padding: 2rem 4rem;
+`
+
+const LoaderWrapper = styled.div`
+	display: flex;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
 `
 
 const App = () => {
@@ -64,7 +72,9 @@ const App = () => {
 				</React.Fragment>
 			</Router>
 		) : (
-			<div>Loding</div>
+			<LoaderWrapper>
+				<Loader />
+			</LoaderWrapper>
 		)
 }
 
