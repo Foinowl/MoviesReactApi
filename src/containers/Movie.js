@@ -2,7 +2,11 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
-import { getMovie, setHeader } from "../actions"
+import { getMovie} from "../actions"
+
+import history from "../history"
+
+import Credits from "../components/Credits"
 
 const MovieWrapper = styled.div`
 	padding: 2rem;
@@ -20,24 +24,27 @@ const Movie = ({ match }) => {
 	const { base_url } = geral.base.images
 	useEffect(() => {
 
-		async function fetchData() {
-			const movie = await dispatch(getMovie(match.params.id))
-			dispatch(setHeader(movie.original_title))
-		}
-  		fetchData();
-		return () => {
-			dispatch(setHeader(""))
-		}
+		dispatch(getMovie(match.params.id))
 	}, [match.params.id])
+
 	if (Object.entries(movie).length === 0) {
 		return <div> Loading...</div>
 	}
+
+	function renderBack() {
+		if (history.action === "PUSH") {
+			return <button onClick={history.goBack}>Back</button>
+		}
+	}
+
 	return (
 		<div>
 			<MovieWrapper>
 				<h1>{movie.original_title}</h1>
 				<MovieImg src={`${base_url}w780${movie.poster_path}`} />
 				<p>{movie.overview}</p>
+				<Credits cast={movie.cast} baseUrl={base_url} />
+				{renderBack()}
 			</MovieWrapper>
 		</div>
 	)

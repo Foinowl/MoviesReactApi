@@ -6,7 +6,9 @@ export default (state = {}, action) => {
 		case TYPES.FETCH_MOVIES_DISCOVER:
 		case TYPES.FETCH_MOVIES_SEARCH:
 			return action.payload
-		case TYPES.CLEAR_PREVIOUS_MOVIES:
+		case TYPES.FETCH_CAST:
+			return { ...state, cast: action.payload }
+		case TYPES.CLEAR_PREVIOUS_MOVIE:
 			return {}
 		default:
 			return state
