@@ -33,10 +33,10 @@ const Search = ({ match, location}) => {
   }
 }
 
-function useFetchMoviesSearch(query, cb, params) {
+function useFetchMoviesSearch(query, getMoviesSearch, params) {
 	const dispatch = useDispatch()
 	useEffect(() => {
-		dispatch(cb(query, params.page))
+		dispatch(getMoviesSearch(query, params.page))
 	}, [query, params.page])
 }
 

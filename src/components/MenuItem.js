@@ -10,9 +10,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 
 const StyledItem = styled.div`
-	padding: 0.5rem 2rem;
-	font-weight: 600;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 1rem 2rem;
 	font-size: 1.2rem;
+	font-weight: 600;
+	line-height: 1;
 	opacity: ${(props) => (props.selected ? "1" : ".6")};
 	color: ${(props) =>
 		props.selected
@@ -30,7 +34,7 @@ const StyledItem = styled.div`
 	text-decoration: none;
 	width: 100%;
 	cursor: pointer;
-	transition: color 0.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+	transition: all 100ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	:not(:last-child) {
 		margin-bottom: 1rem;
 	}

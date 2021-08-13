@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar"
 
 const Wrapper = styled.div`
 	display: flex;
+	height: 8rem;
 	padding: 1rem;
 	align-items: center;
 	color: var(--color-primary);

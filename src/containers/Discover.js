@@ -36,13 +36,14 @@ const Discover = ({ match, location }) => {
 }
 
 
-function useFetchMoviesDiscover(name, cb, params) {
+function useFetchMoviesDiscover(name, getMoviesDiscover, params) {
 	const dispatch = useDispatch()
 	const query = name.replace(/\s+/g, "_").toLowerCase()
-	useEffect(() => {		
-		dispatch(cb(query, params.page))
+	useEffect(() => {
+		dispatch(getMoviesDiscover(query, params.page))
 	}, [query, params.page])
 }
+
 
 export default Discover
 

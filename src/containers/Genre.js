@@ -37,25 +37,12 @@ const Genre = ({ match, location }) => {
 }
 
 
-function useFetchMoviesGenre(name, cb, params, sort) {
+function useFetchMoviesGenre(name, getMoviesGenre, params, sort) {
 	const dispatch = useDispatch()
 	useEffect(() => {
-		dispatch(cb(name, params.page, sort))
+		dispatch(getMoviesGenre(name, params.page, sort))
 	}, [name, params.page, sort])
 }
 
-function useSetSelected(name, cb, genres, setHeader) {
-	const dispatch = useDispatch()
-	useEffect(() => {
-		if (genres.find((el) => el.name === name)) {
-			dispatch(cb(name))
-			dispatch(setHeader(name))
-		}
-		return () => {
-			dispatch(cb(""))
-			dispatch(setHeader(""))
-		}
-	}, [name])
-}
 
 export default Genre
