@@ -8,6 +8,16 @@ import { getMoviesSearch, clearMovies } from "../actions"
 import MoviesList from "../components/MoviesList"
 import Loader from "../components/Loader"
 
+import styled from "styled-components"
+
+
+const Wrapper = styled.div`
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+`
+
+
 const Search = ({ match, location}) => {
 	const dispatch = useDispatch()
 	const { query } = match.params
@@ -30,10 +40,10 @@ const Search = ({ match, location}) => {
 			)
 	} else {
 		return (
-				<React.Fragment>
+				<Wrapper>
 					<Header title={query} subtitle="search results" />
 					<MoviesList movies={movies} baseUrl={base_url} />;
-				</React.Fragment>
+				</Wrapper>
 			)
 	}
 }

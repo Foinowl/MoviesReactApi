@@ -7,7 +7,7 @@ import NotfoundSvg from "../svg/empty.svg"
 
 const Wrapper = styled.div`
 	width: 100%;
-	height: calc(100vh - 15rem);
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

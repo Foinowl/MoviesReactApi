@@ -42,9 +42,7 @@ export default createGlobalStyle`
       font-weight: 400;
       line-height: 1.6;
     }
-	#root {
-  		min-height: 100vh;
-	}
+
     form,
     input,
     textarea,

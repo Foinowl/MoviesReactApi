@@ -8,6 +8,14 @@ import { setSelectedMenu, getMoviesDiscover, clearMovies } from "../actions"
 import MoviesList from "../components/MoviesList"
 import Loader from "../components/Loader"
 
+import styled from "styled-components"
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+`;
+
 const Discover = ({ match, location }) => {
 	const dispatch = useDispatch()
 	
@@ -42,10 +50,10 @@ const Discover = ({ match, location }) => {
 	}
 
 	  return (
-			<React.Fragment>
+			<Wrapper>
 				<Header title={geral.selected} subtitle="movies" />
-				<MoviesList movies={movies} baseUrl={base_url} />;
-			</React.Fragment>
+				<MoviesList movies={movies} baseUrl={base_url} />
+			</Wrapper>
 		)
 }
 

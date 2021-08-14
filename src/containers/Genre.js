@@ -6,6 +6,14 @@ import SortBy from "../components/SortBy"
 import MoviesList from "../components/MoviesList"
 import Loader from "../components/Loader"
 import Header from "../components/Header"
+import styled from "styled-components"
+
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+`;
 
 const Genre = ({ match, location }) => {
 	const dispatch = useDispatch()
@@ -38,11 +46,11 @@ const Genre = ({ match, location }) => {
 		return <Loader />
 	}
   return (
-		<React.Fragment>
+		<Wrapper>
 			<Header title={geral.selected} subtitle="movies" />
 			<SortBy option={option} setOption={setOption} />
 			<MoviesList movies={movies} baseUrl={base_url} />
-		</React.Fragment>
+		</Wrapper>
 	)
 }
 

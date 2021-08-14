@@ -66,16 +66,20 @@ const MainWrapper = styled.div`
 	display: flex;
 	align-items: flex-start;
 	user-select: none;
+	height: 100%;
 `
 
 const ContentWrapper = styled.div`
 	width: 100%;
+	height: 100%;
 	min-height: 100vh;
-	padding: 2rem 4rem;
-	margin-top: 2rem;
+	display: flex;
+	fex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 6rem 4rem;
 	position: relative;
 `
-
 const App = () => {
 	const dispatch = useDispatch()
 	const base = useSelector((store) => store.geral.base)
