@@ -34,6 +34,7 @@ import {
 	faChevronRight,
 	faChevronLeft,
 	faLink,
+	faPlay,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farFaStar } from "@fortawesome/free-regular-svg-icons"
 
@@ -53,7 +54,8 @@ library.add(
 	faSearch,
 	faChevronRight,
 	faChevronLeft,
-	faLink
+	faLink,
+	faPlay
 )
 
 const MainWrapper = styled.div`

@@ -10,6 +10,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from './theme';
 import GlobalStyle from './globals';
 
+import "../node_modules/react-modal-video/scss/modal-video.scss"
 
 import App from './containers/App';
 

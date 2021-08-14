@@ -17,9 +17,6 @@ const Search = ({ match, location}) => {
 
 	const movies = useSelector((store) => store.movies)
 
-	useEffect(() => {
-		const title = `Search results for: ${query}`
-	}, [query])
 	useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies)
 
 	if (movies.loading) {
