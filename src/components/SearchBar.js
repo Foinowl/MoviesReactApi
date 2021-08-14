@@ -106,7 +106,7 @@ const SearchBar = () => {
 					ref={node}
 				>
 					<Button type="submit" state={state}>
-						<FontAwesomeIcon icon={faSearch} size="1x" />
+						<FontAwesomeIcon icon={"search"} size="1x" />
 					</Button>
 					<Input
 						onChange={(e) => setInput(e.target.value)}

@@ -19,8 +19,39 @@ import Header from "../components/Header"
 import Loader from "../components/Loader"
 import SearchBar from "../components/SearchBar"
 
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { fab } from "@fortawesome/free-brands-svg-icons"
+import {
+	faArrowLeft,
+	faArrowRight,
+	faHome,
+	faCalendar,
+	faPoll,
+	faHeart,
+	faDotCircle,
+	faStar as fasFaStar,
+	faSearch,
+} from "@fortawesome/free-solid-svg-icons"
+import { faStar as farFaStar } from "@fortawesome/free-regular-svg-icons"
+
+library.add(
+	fab,
+	faArrowLeft,
+	faArrowRight,
+	faHome,
+	faCalendar,
+	faPoll,
+	faHeart,
+	faDotCircle,
+	faDotCircle,
+	fasFaStar,
+	farFaStar,
+	faSearch
+)
+
 const MainWrapper = styled.div`
 	display: flex;
+	user-select: none;
 `
 
 const ContentWrapper = styled.div`

@@ -10,12 +10,7 @@ import {
 	faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons"
 
-const Wrapper = styled.div`
-	> * div {
-		display: flex;
-		justify-content: center;
-	}
-`
+const Wrapper = styled.div``
 
 const Credits = ({ cast, baseUrl }) => {
 	if (!cast) {
@@ -48,15 +43,15 @@ const Credits = ({ cast, baseUrl }) => {
 			<ItemsCarousel
 				// Carousel configurations
 				numberOfCards={totalShow}
-				gutter={0}
+				gutter={10}
 				showSlither={false}
-				firstAndLastGutter={true}
+				firstAndLastGutter={false}
 				freeScrolling={false}
 				// Active item configurations
 				requestToChangeActive={changeActiveItem}
 				activeItemIndex={currentItem}
-				activePosition={"left"}
-				chevronWidth={20}
+				activePosition={"center"}
+				chevronWidth={25}
 				rightChevron={<FontAwesomeIcon icon={faChevronRight} size="1x" />}
 				leftChevron={<FontAwesomeIcon icon={faChevronLeft} size="1x" />}
 				outsideChevron={true}

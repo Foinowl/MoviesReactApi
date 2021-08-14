@@ -2,12 +2,7 @@ import React from "react"
 
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-	faCalendar,
-	faPoll,
-	faHeart,
-	faDotCircle,
-} from "@fortawesome/free-solid-svg-icons"
+
 
 const StyledItem = styled.div`
 	width: 100%;
@@ -42,16 +37,17 @@ const StyledItem = styled.div`
 		border: 1px solid;
 	}
 `
+
 function renderIcon(title) {
 	switch (title) {
 		case "Popular":
-			return faHeart
+			return "heart"
 		case "Top Rated":
-			return faPoll
+			return "poll"
 		case "Upcoming":
-			return faCalendar
+			return "calendar"
 		default:
-			return faDotCircle
+			return "dot-circle"
 	}
 }
 

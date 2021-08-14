@@ -31,7 +31,7 @@ const Pagination = ({ movies }) => {
 					to={`?page=${page + 1}`}
 					solid
 					title={`Page ${page + 1}`}
-					icon="faArrowRight"
+					icon="arrow-right"
 				/>
 			</Wrapper>
 		)
@@ -46,13 +46,13 @@ const Pagination = ({ movies }) => {
 					solid
 					left
 					title={`Page ${page - 1}`}
-					icon="faArrowLeft"
+					icon="arrow-left"
 				/>
 				<Button
 					to={`?page=${page + 1}`}
 					solid
 					title={`Page ${page + 1}`}
-					icon="faArrowRight"
+					icon="arrow-right"
 				/>
 			</Wrapper>
 		)
@@ -67,7 +67,7 @@ const Pagination = ({ movies }) => {
 					solid
 					left
 					title={`Page ${page - 1}`}
-					icon="faArrowLeft"
+					icon="arrow-left"
 				/>
 			</Wrapper>
 		)

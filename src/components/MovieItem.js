@@ -164,8 +164,8 @@ const MovieItem = ({ movie, baseUrl }) => {
 				<Title>{movie.title}</Title>
 				<RatingsWrapper>
 					<Rating
-						emptySymbol={<FontAwesome icon={starRegular} size="1x" />}
-						fullSymbol={<FontAwesome icon={starSolid} size="1x" />}
+						emptySymbol={<FontAwesome icon={["far", "star"]} size="1x" />}
+						fullSymbol={<FontAwesome icon={["fas", "star"]} size="1x" />}
 						initialRating={movie.vote_average / 2}
 						readonly
 					/>
