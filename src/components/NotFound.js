@@ -3,6 +3,8 @@ import styled from "styled-components"
 
 import Button from "./Button"
 
+import NotfoundSvg from "../svg/empty.svg"
+
 const Wrapper = styled.div`
 	width: 100%;
 	height: calc(100vh - 15rem);
@@ -42,7 +44,7 @@ const NotFound = () => {
 				<Title>Upps!</Title>
 				<SubTitle>This doesn't exist...</SubTitle>
 			</TitleWrapper>
-			<Svg src="./svg/empty.svg" alt="Not found" />
+			<Svg src={`${NotfoundSvg}`} alt="Not found" />
 			<Button to="/" title="Home" solid icon="faHome" left />
 		</Wrapper>
 	)
