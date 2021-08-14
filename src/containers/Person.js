@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import queryString from "query-string"
 import history from "../history"
@@ -99,17 +99,12 @@ const AWrapper = styled.a`
 	text-decoration: none;
 `
 
-const Person = ({
-	location,
-	geral,
-	match,
-	getPerson,
-	clearPerson,
-	getMoviesforPerson,
-	clearMoviesforPerson,
-	person,
-	moviesPerson,
-}) => {
+const Person = ({ location, match }) => {
+	const person = useSelector((state) => state.person)
+	const geral = useSelector((state) => state.geral)
+	const moviesPerson = useSelector(state => state.moviesPerson)
+	const dispatch = useDispatch()
+
 	const [loaded, setLoaded] = useState(false)
 	const [error, setError] = useState(false)
 	const { base_url } = geral.base.images
@@ -117,18 +112,18 @@ const Person = ({
 
 	// Fetch person when id on url changes
 	useEffect(() => {
-		getPerson(match.params.id)
+		dispatch(getPerson(match.params.id))
 		window.scrollTo({
 			top: (0, 0),
 			behavior: "smooth",
 		})
-		return () => clearPerson()
+		return () => dispatch(clearPerson())
 	}, [match.params.id])
 
 	// Fetch movies where person enters
 	useEffect(() => {
-		getMoviesforPerson(match.params.id, params.page)
-		return () => clearMoviesforPerson()
+		dispatch(getMoviesforPerson(match.params.id, params.page))
+		return () => dispatch(clearMoviesforPerson())
 	}, [params.page])
 
 	// If loading
@@ -238,16 +233,6 @@ function renderPersonMovies(moviesPerson, base_url) {
 	}
 }
 
-// Get state from store and pass as props to component
-const mapStateToProps = ({ person, geral, moviesPerson }) => ({
-	person,
-	geral,
-	moviesPerson,
-})
 
-export default connect(mapStateToProps, {
-	getPerson,
-	clearPerson,
-	getMoviesforPerson,
-	clearMoviesforPerson,
-})(Person)
+
+export default Person

@@ -12,12 +12,15 @@ import Genre from "./Genre"
 import Search from "./Search"
 import Movie from "./Movie"
 import Person from "./Person"
+import ShowError from "./ShowError"
+
 
 import NotFound from "../components/NotFound"
 import Home from "../components/Home"
 import Header from "../components/Header"
 import Loader from "../components/Loader"
 import SearchBar from "../components/SearchBar"
+
 
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
@@ -105,6 +108,7 @@ const App = () => {
 							<Route path="/search/:query" exact component={Search} />
 							<Route path="/movie/:id" exact component={Movie} />
 							<Route path="/person/:id" exact component={Person} />
+							<Route path="/error" component={ShowError} />
 							<Route
 								path="/404"
 								component={() => (
