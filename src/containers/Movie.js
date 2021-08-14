@@ -2,12 +2,14 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
-import { getMovie} from "../actions"
+import { getMovie, getRecommendations } from "../actions"
 
 import history from "../history"
+import queryString from "query-string"
 
 import Credits from "../components/Credits"
 import Loader from "../components/Loader"
+import MoviesList from "../components/MoviesList"
 
 const MovieWrapper = styled.div`
 	padding: 2rem;
@@ -18,15 +20,21 @@ const MovieImg = styled.img`
 	height: auto;
 `
 
-const Movie = ({ match }) => {
+const Movie = ({ match, location }) => {
 	const dispatch = useDispatch()
-	const geral = useSelector(store => store.geral)
+	const geral = useSelector((store) => store.geral)
 	const movie = useSelector((store) => store.movie)
+	const recommended = useSelector((store) => store.recommended)
 	const { base_url } = geral.base.images
+	const params = queryString.parse(location.search)
 	useEffect(() => {
-
 		dispatch(getMovie(match.params.id))
 	}, [match.params.id])
+
+	// Fetch recommended movies everytime recommendations page change
+	useEffect(() => {
+		dispatch(getRecommendations(match.params.id, params.page))
+	}, [params.page])
 
 	if (movie.loading) {
 		return <Loader />
@@ -46,11 +54,15 @@ const Movie = ({ match }) => {
 				<p>{movie.overview}</p>
 				<Credits cast={movie.cast} baseUrl={base_url} />
 				{renderBack()}
+				<h1> Recommended movies based on this:</h1>
+				{recommended.loading ? (
+					<Loader />
+				) : (
+					<MoviesList movies={recommended} baseUrl={base_url} />
+				)}
 			</MovieWrapper>
 		</div>
 	)
 }
-
-
 
 export default Movie
