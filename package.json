@@ -17,6 +17,7 @@
     "react-burger-menu": "^2.6.5",
     "react-dom": "^16.8.4",
     "react-ga": "^2.5.7",
+    "react-items-carousel": "^2.8.0",
     "react-lazyload": "^2.5.0",
     "react-modal-video": "^1.2.1",
     "react-rating": "^1.6.2",
