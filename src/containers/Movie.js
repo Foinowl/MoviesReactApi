@@ -65,7 +65,7 @@ const MovieWrapper = styled.div`
 	justify-content: center;
 	width: 100%;
 	max-width: 120rem;
-	margin: 2rem auto;
+	margin: 4rem auto;
 	opacity: ${(props) => (props.loaded ? "1" : "0")};
 	visibility: ${(props) => (props.loaded ? "visible" : "hidden")};
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -94,7 +94,7 @@ const MovieImg = styled.img`
 `
 
 const HeaderWrapper = styled.div`
-	margin: 2rem 0rem;
+	margin-bottom: 2rem;
 `
 
 const Heading = styled.h3`
@@ -242,7 +242,7 @@ const Movie = ({ match, location }) => {
 				<ImageWrapper>
 					<MovieImg
 						error={error ? 1 : 0}
-						src={`${base_url}original${movie.poster_path}`}
+						src={`${base_url}w780${movie.poster_path}`}
 						onLoad={() => setLoaded(true)}
 						// If no image, error will occurr, we set error to true
 						// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
@@ -264,15 +264,21 @@ const Movie = ({ match, location }) => {
 							<RatingNumber>{movie.vote_average} </RatingNumber>
 						</RatingsWrapper>
 						<Info>
-							{`${movie.spoken_languages[0].name} / ${
-								movie.runtime
-							} min / ${splitYear(movie.release_date)}`}
+							{renderInfo(
+								movie.spoken_languages[0].name,
+								movie.runtime,
+								splitYear(movie.release_date)
+							)}
 						</Info>
 					</DetailsWrapper>
 					<Heading>The Genres</Heading>
 					<LinksWrapper>{renderGenres(movie.genres)}</LinksWrapper>
 					<Heading>The Synopsis</Heading>
-					<Text>{movie.overview}</Text>
+					<Text>
+						{movie.overview
+							? movie.overview
+							: "There is no synopsis available..."}
+					</Text>
 					<Heading>The Cast</Heading>
 					<Credits cast={movie.cast} baseUrl={base_url} />
 					<ButtonsWrapper>
@@ -294,8 +300,18 @@ const Movie = ({ match, location }) => {
 
 // Function to get the year only from the date
 function splitYear(date) {
-  const [year] = date.split('-');
-  return year;
+	if (!date) {
+		return
+	}
+	const [year] = date.split('-');
+	return year;
+}
+
+function renderInfo(...info) {
+	return info
+		.filter((el) => el !== null)
+		.map((el) => (typeof el === "number" ? `${el} min.` : el))
+		.map((el, i, array) => (i !== array.length - 1 ? `${el} / ` : el))
 }
 
 function renderGenres(genres) {
