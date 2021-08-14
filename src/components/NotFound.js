@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-
+import { Link } from "react-router-dom"
 import Button from "./Button"
 
 import NotfoundSvg from "../svg/empty.svg"
@@ -12,6 +12,10 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
+`
+
+const LinkWrapper = styled(Link)`
+	text-decoration: none;
 `
 
 const TitleWrapper = styled.div`
@@ -45,7 +49,9 @@ const NotFound = ({ title, subtitle }) => {
 				<SubTitle>{subtitle}</SubTitle>
 			</TitleWrapper>
 			<Svg src={`${NotfoundSvg}`} alt="Not found" />
-			<Button to="/" title="Home" solid icon="home" left />
+			<LinkWrapper to="/">
+				<Button title="Home" solid icon="home" left />
+			</LinkWrapper>
 		</Wrapper>
 	)
 }

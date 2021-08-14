@@ -30,7 +30,7 @@ const StyledLink = styled(Link)`
 	display: block;
 	display: flex;
 	align-items: center;
-	font-size: 1rem;
+	font-size: 1.2rem;
 	font-weight: 700;
 	line-height: 1;
 	color: var(--color-primary-light);
@@ -51,7 +51,10 @@ const StyledLink = styled(Link)`
 const LinksWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	margin-bottom: 3rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+	font-size: 1.4rem;
 `
 
 const MovieWrapper = styled.div`
@@ -102,7 +105,7 @@ const Heading = styled.h3`
 const DetailsWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	margin-bottom: 3rem;
+	margin-bottom: 5rem;
 `
 
 const RatingsWrapper = styled.div`
@@ -121,8 +124,9 @@ const RatingNumber = styled.p`
 const Info = styled.div`
 	font-weight: 700;
 	line-height: 1;
+	text-transform: uppercase;
 	color: var(--color-primary-lighter);
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 `
 
 const Text = styled.p`
@@ -131,6 +135,15 @@ const Text = styled.p`
 	color: var(--link-color);
 	font-weight: 500;
 	margin-bottom: 3rem;
+`
+
+const ButtonsWrapper = styled.div`
+	display: flex;
+	align-items: center;
+`
+
+const LeftButtons = styled.div`
+	margin-right: auto;
 `
 
 const Movie = ({ match, location }) => {
@@ -204,7 +217,10 @@ const Movie = ({ match, location }) => {
 					<Text>{movie.overview}</Text>
 					<Heading>The Cast</Heading>
 					<Credits cast={movie.cast} baseUrl={base_url} />
-					{renderBack()}
+					<ButtonsWrapper>
+						<LeftButtons>dwadwa</LeftButtons>
+						{renderBack()}
+					</ButtonsWrapper>
 				</MovieDetails>
 			</MovieWrapper>
 			<Header title="Recommended" subtitle="movies" />
