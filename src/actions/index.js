@@ -143,6 +143,13 @@ export const getMovie = (id) => async (dispatch) => {
 	dispatch({ type: TYPES.FETCH_MOVIE_FINISHED })
 }
 
+// Set loading to true for next render
+export const clearMovie = () => {
+	return {
+		type: TYPES.FETCH_MOVIE_LOADING,
+	}
+}
+
 // Get credits of single movie
 export const getCredits = () => async (dispatch, getState) => {
 	const { id } = getState().movie
@@ -152,6 +159,13 @@ export const getCredits = () => async (dispatch, getState) => {
 		payload: res.data.cast,
 	})
 }
+
+// Set loading to true for next render
+export const clearRecommendations = () => {
+  return {
+    type: TYPES.FETCH_RECOMMENDATIONS_LOADING,
+  };
+};
 
 export const getRecommendations = (id, page) => async (dispatch) => {
 	dispatch({ type: TYPES.FETCH_RECOMMENDATIONS_LOADING })

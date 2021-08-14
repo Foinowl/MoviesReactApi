@@ -2,7 +2,12 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
-import { getMovie, getRecommendations } from "../actions"
+import {
+	getMovie,
+	getRecommendations,
+	clearRecommendations,
+	clearMovie,
+} from "../actions"
 
 import history from "../history"
 import queryString from "query-string"
@@ -29,11 +34,13 @@ const Movie = ({ match, location }) => {
 	const params = queryString.parse(location.search)
 	useEffect(() => {
 		dispatch(getMovie(match.params.id))
+		return () => dispatch(clearMovie())
 	}, [match.params.id])
 
 	// Fetch recommended movies everytime recommendations page change
 	useEffect(() => {
 		dispatch(getRecommendations(match.params.id, params.page))
+		return () => dispatch(clearRecommendations())
 	}, [params.page])
 
 	if (movie.loading) {
