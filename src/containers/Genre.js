@@ -16,7 +16,10 @@ const Genre = ({ match, location }) => {
 
 	const params = queryString.parse(location.search)
 
-	const [sort, setsort] = useState("popularity.desc")
+	  const [option, setOption] = useState({
+			value: "popularity.desc",
+			label: "Popularity",
+		})
 
 	useEffect(() => {
 		dispatch(setSelectedMenu(match.params.name))
@@ -26,10 +29,9 @@ const Genre = ({ match, location }) => {
 			match.params.name,
 			getMoviesGenre,
 			params,
-			sort,
+			option,
 			clearMovies
 		)
-
 
 
 	if (movies.loading) {
@@ -38,23 +40,29 @@ const Genre = ({ match, location }) => {
   return (
 		<React.Fragment>
 			<Header title={geral.selected} subtitle="movies" />
-			<SortBy changeSort={setsort} />
+			<SortBy option={option} setOption={setOption} />
 			<MoviesList movies={movies} baseUrl={base_url} />
 		</React.Fragment>
 	)
 }
 
 
-function useFetchMoviesGenre(name, getMoviesGenre, params, sort, clearMovies) {
+function useFetchMoviesGenre(
+	genre,
+	getMoviesGenre,
+	params,
+	option,
+	clearMovies
+) {
 	const dispatch = useDispatch()
 	useEffect(() => {
-		dispatch(getMoviesGenre(name, params.page, sort))
+		dispatch(getMoviesGenre(genre, params.page, option.value))
 		window.scrollTo({
-				top: (0, 0),
-				behavior: "smooth",
-			})
+			top: (0, 0),
+			behavior: "smooth",
+		})
 		return () => dispatch(clearMovies())
-	}, [name, params.page, sort])
+	}, [genre, params.page, option])
 }
 
 
