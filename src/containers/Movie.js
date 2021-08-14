@@ -17,7 +17,7 @@ import NothingSvg from "../svg/nothing.svg"
 import Header from "../components/Header"
 import Rating from "../components/Rating"
 
-import Stars from "react-rating"
+import Button from "../components/Button"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 
@@ -30,7 +30,7 @@ const StyledLink = styled(Link)`
 	display: block;
 	display: flex;
 	align-items: center;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	font-weight: 700;
 	line-height: 1;
 	color: var(--color-primary-light);
@@ -38,7 +38,7 @@ const StyledLink = styled(Link)`
 	padding: 0.5rem 0rem;
 	transition: all 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	&:not(:last-child) {
-		margin-right: 3rem;
+		margin-right: 2rem;
 	}
 	&:hover {
 		transform: translateY(-3px);
@@ -59,7 +59,7 @@ const LinksWrapper = styled.div`
 
 const MovieWrapper = styled.div`
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: center;
 	width: 100%;
 	max-width: 120rem;
@@ -144,6 +144,14 @@ const ButtonsWrapper = styled.div`
 
 const LeftButtons = styled.div`
 	margin-right: auto;
+	display: flex;
+	& > *:not(:last-child) {
+		margin-right: 2rem;
+	}
+`
+
+const AWrapper = styled.a`
+	text-decoration: none;
 `
 
 const Movie = ({ match, location }) => {
@@ -173,9 +181,34 @@ const Movie = ({ match, location }) => {
 	}
 
 	function renderBack() {
-		if (history.action === "PUSH") {
-			return <button onClick={history.goBack}>Back</button>
+      return (
+				<div onClick={history.goBack}>
+					<Button title="Go back" solid left icon="arrow-left" />
+				</div>
+			)
+	}
+
+
+	const renderWebsite = (link) => {
+		if (!link) {
+			return null
 		}
+		return (
+			<AWrapper target="_blank" href={link}>
+				<Button title="Website" icon="link" />
+			</AWrapper>
+		)
+	}
+
+	const renderImdb = (id) => {
+		if (!id) {
+			return null
+		}
+		return (
+			<AWrapper target="_blank" href={`https://www.imdb.com/title/${id}`}>
+				<Button title="IMDB" icon={["fab", "imdb"]} />
+			</AWrapper>
+		)
 	}
 
 	return (
@@ -218,7 +251,10 @@ const Movie = ({ match, location }) => {
 					<Heading>The Cast</Heading>
 					<Credits cast={movie.cast} baseUrl={base_url} />
 					<ButtonsWrapper>
-						<LeftButtons>dwadwa</LeftButtons>
+						<LeftButtons>
+							{renderWebsite(movie.homepage)}
+							{renderImdb(movie.imdb_id)}
+						</LeftButtons>
 						{renderBack()}
 					</ButtonsWrapper>
 				</MovieDetails>

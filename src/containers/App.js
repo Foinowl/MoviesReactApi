@@ -31,6 +31,9 @@ import {
 	faDotCircle,
 	faStar as fasFaStar,
 	faSearch,
+	faChevronRight,
+	faChevronLeft,
+	faLink,
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farFaStar } from "@fortawesome/free-regular-svg-icons"
 
@@ -46,7 +49,11 @@ library.add(
 	faDotCircle,
 	fasFaStar,
 	farFaStar,
-	faSearch
+	faSearch,
+	faSearch,
+	faChevronRight,
+	faChevronLeft,
+	faLink
 )
 
 const MainWrapper = styled.div`
