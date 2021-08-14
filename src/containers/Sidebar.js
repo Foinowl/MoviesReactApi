@@ -95,7 +95,7 @@ var styles = {
 		height: "100%",
 	},
 	bmMenu: {
-		background: "#263238",
+		background: "#161706",
 		padding: "2.5em 1.5em",
 	},
 	bmItemList: {
@@ -137,17 +137,6 @@ const Sidebar = () => {
 			{renderStatic(staticCategories, selected, setisOpened)}
 			<Heading>Genres</Heading>
 			{renderGenres(genres, selected, setisOpened)}
-			<StyledCoffe
-				target="_blank"
-				rel="noopener noreferrer"
-				href="https://www.buymeacoffee.com/fidalgodev"
-			>
-				<img
-					src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
-					alt="Buy me a coffee"
-				/>
-				<span style={{ marginLeft: "5px" }}>Buy me a coffee</span>
-			</StyledCoffe>
 		</Menu>
 	) : (
 		<StickyBox>

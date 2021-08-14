@@ -8,7 +8,7 @@ const StarsWrapper = styled(Stars)`
 `
 
 const FontAwesome = styled(FontAwesomeIcon)`
-	color: inherit;
+	color: var(--color-primary-light);
 	transition: color 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
 `
 

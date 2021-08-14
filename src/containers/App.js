@@ -68,6 +68,7 @@ const MainWrapper = styled.div`
 	align-items: flex-start;
 	height: 100%;
 	width: 100%;
+	background: #000;
 	user-select: none;
 `
 

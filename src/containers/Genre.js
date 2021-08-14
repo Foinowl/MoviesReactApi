@@ -70,17 +70,6 @@ function useFetchMoviesGenre(
 		})
 	}, [])
 
-	// Send url to setSelected Action Creator, it will check if is valid, and set the header accordingly
-	useEffect(() => {
-		window.scrollTo({
-			top: (0, 0),
-			behavior: "smooth",
-		})
-		setSelectedMenu(match.params.name)
-		// Clean up to remove selected menu from state
-		return () => setSelectedMenu()
-	}, [match.params.name])
-
 	useEffect(() => {
 		window.scrollTo({
 			top: (0, 0),
