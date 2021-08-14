@@ -5,6 +5,7 @@ import { setSelectedMenu, getMoviesGenre, clearMovies } from "../actions"
 import SortBy from "../components/SortBy"
 import MoviesList from "../components/MoviesList"
 import Loader from "../components/Loader"
+import Header from "../components/Header"
 
 const Genre = ({ match, location }) => {
 	const dispatch = useDispatch()
@@ -36,6 +37,7 @@ const Genre = ({ match, location }) => {
 	}
   return (
 		<React.Fragment>
+			<Header title={geral.selected} subtitle="movies" />
 			<SortBy changeSort={setsort} />
 			<MoviesList movies={movies} baseUrl={base_url} />
 		</React.Fragment>

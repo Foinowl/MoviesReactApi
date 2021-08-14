@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import queryString from "query-string"
+import Header from "../components/Header"
+import NotFound from "../components/NotFound"
 
-import { setHeader, getMoviesSearch, clearMovies } from "../actions"
+import { getMoviesSearch, clearMovies } from "../actions"
 import MoviesList from "../components/MoviesList"
 import Loader from "../components/Loader"
 
@@ -17,19 +19,25 @@ const Search = ({ match, location}) => {
 
 	useEffect(() => {
 		const title = `Search results for: ${query}`
-		dispatch(setHeader(title))
-		return () => {
-			dispatch(setHeader())
-		}
 	}, [query])
 	useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies)
 
 	if (movies.loading) {
 		return <Loader />
 	} else if (movies.total_results === 0) {
-		return <div>No results</div>
+		return (
+				<NotFound
+					title="Sorry!"
+					subtitle={`There were no results for ${query}...`}
+				/>
+			)
 	} else {
-		return <MoviesList movies={movies} baseUrl={base_url} />
+		return (
+				<React.Fragment>
+					<Header title={query} subtitle="search results" />
+					<MoviesList movies={movies} baseUrl={base_url} />;
+				</React.Fragment>
+			)
 	}
 }
 

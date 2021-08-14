@@ -17,6 +17,7 @@ import NotFound from "../components/NotFound"
 import Home from "../components/Home"
 import Header from "../components/Header"
 import Loader from "../components/Loader"
+import SearchBar from "../components/SearchBar"
 
 const MainWrapper = styled.div`
 	display: flex;
@@ -49,6 +50,7 @@ const App = () => {
 				<MainWrapper>
 					<Sidebar />
 					<ContentWrapper>
+						<SearchBar />
 						<Header />
 						<Switch>
 							<Route
@@ -62,8 +64,17 @@ const App = () => {
 							<Route path="/search/:query" exact component={Search} />
 							<Route path="/movie/:id" exact component={Movie} />
 							<Route path="/cast/:id" exact component={Cast} />
-							<Route path="/404" component={NotFound} />
-							<Route component={NotFound} />
+							<Route
+								path="/404"
+								component={() => (
+									<NotFound title="Upps!" subtitle={`This doesn't exist...`} />
+								)}
+							/>
+							<Route
+								component={() => (
+									<NotFound title="Upps!" subtitle={`This doesn't exist...`} />
+								)}
+							/>
 						</Switch>
 					</ContentWrapper>
 				</MainWrapper>

@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import queryString from "query-string"
+import Header from "../components/Header"
 
 import { setSelectedMenu, getMoviesDiscover, clearMovies } from "../actions"
 import MoviesList from "../components/MoviesList"
@@ -36,7 +37,12 @@ const Discover = ({ match, location }) => {
 		return <Loader />
 	}
 
-	return <MoviesList movies={movies} baseUrl={base_url} />
+	  return (
+			<React.Fragment>
+				<Header title={geral.selected} subtitle="movies" />
+				<MoviesList movies={movies} baseUrl={base_url} />;
+			</React.Fragment>
+		)
 }
 
 

@@ -1,32 +1,32 @@
 import React from "react"
-import { useSelector } from 'react-redux'
 import styled from "styled-components"
 
-import SearchBar from "./SearchBar"
-
-const Wrapper = styled.div`
-	display: flex;
-	height: 8rem;
-	padding: 1rem;
-	align-items: center;
-	color: var(--color-primary);
-`
-
 const Title = styled.h1`
-	font-size: 2.2rem;
-	font-weight: 700;
-	margin-right: auto;
+	font-size: 2.5rem;
+	font-weight: 200;
+	line-height: 1;
 	letter-spacing: -0.5px;
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
 `
 
-const Header = () => {
-	const header = useSelector((store) => store.geral.header)
-	return (
-		<Wrapper>
-			<Title>{header}</Title>
-			<SearchBar />
-		</Wrapper>
-	)
-}
+const Subtitle = styled.h2`
+	text-transform: uppercase;
+	line-height: 1;
+	font-size: 1.2rem;
+	font-weight: 700;
+`
+
+const HeaderWrapper = styled.div`
+	margin-bottom: 2rem;
+	margin-top: 1rem;
+`
+
+const Header = ({ title, subtitle }) => (
+	<HeaderWrapper>
+		<Title>{title}</Title>
+		<Subtitle>{subtitle}</Subtitle>
+	</HeaderWrapper>
+)
 
 export default Header
