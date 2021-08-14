@@ -21,6 +21,7 @@ import Header from "../components/Header"
 import Loader from "../components/Loader"
 import SearchBar from "../components/SearchBar"
 
+import StickyBox from "react-sticky-box"
 
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
@@ -63,6 +64,7 @@ library.add(
 
 const MainWrapper = styled.div`
 	display: flex;
+	align-items: flex-start;
 	user-select: none;
 `
 
@@ -92,7 +94,9 @@ const App = () => {
 		<Router history={history}>
 			<React.Fragment>
 				<MainWrapper>
-					<Sidebar />
+					<StickyBox>
+						<Sidebar />
+					</StickyBox>
 					<ContentWrapper>
 						<SearchBar />
 						<Header />

@@ -315,10 +315,11 @@ function splitYear(date) {
 	return year
 }
 function renderInfo(languages, time, data) {
-	const info = [time, data]
+	const info = []
 	if (languages.length !== 0) {
 		info.push(languages[0].name)
 	}
+	info.push(time, data)
 	return info
 		.filter((el) => el !== null)
 		.map((el) => (typeof el === "number" ? `${el} min.` : el))

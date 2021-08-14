@@ -7,16 +7,14 @@ import Logo from "../components/Logo"
 import MenuItem from "../components/MenuItem"
 
 const Wrapper = styled.div`
-	position: relative;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
-	width: 28rem;
+	width: 25rem;
+	padding: 2rem;
 	margin: 4rem 0;
 	color: var(--color-primary-dark);
-	margin: 2rem 0;
+	border-right: 1px solid var(--border-color);
 `
-
 const Heading = styled.h2`
 	font-weight: 700;
 	font-size: 1.1rem;
@@ -29,10 +27,7 @@ const Heading = styled.h2`
 `
 
 const MenuWrapper = styled.div`
-	width: 100%;
-	padding: 2rem 3rem;
 	position: relative;
-	border-right: 1px solid var(--border-color);
 `
 
 const LinkWrap = styled(Link)`
