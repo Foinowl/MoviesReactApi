@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
@@ -12,13 +13,12 @@ import {
 import history from "../history"
 import queryString from "query-string"
 
-import { Link } from "react-router-dom"
 import NothingSvg from "../svg/nothing.svg"
 import Header from "../components/Header"
 import Rating from "../components/Rating"
 import NotFound from "../components/NotFound"
 import Button from "../components/Button"
-import Credits from "../components/Credits"
+import Cast from "../components/Cast"
 import Loader from "../components/Loader"
 import MoviesList from "../components/MoviesList"
 
@@ -127,12 +127,12 @@ const Info = styled.div`
 	line-height: 1;
 	text-transform: uppercase;
 	color: var(--color-primary-lighter);
-	font-size: 1.3rem;
+	font-size: 1rem;
 `
 
 const Text = styled.p`
-	font-size: 1.3rem;
-	line-height: 1.6;
+	font-size: 1.4rem;
+	line-height: 1.8;
 	color: var(--link-color);
 	font-weight: 500;
 	margin-bottom: 3rem;
@@ -170,9 +170,9 @@ const Movie = ({ match, location }) => {
 	useEffect(() => {
 		dispatch(getMovie(match.params.id))
 		window.scrollTo({
-				top: (0, 0),
-				behavior: "smooth",
-			})
+			top: (0, 0),
+			behavior: "smooth",
+		})
 		return () => dispatch(clearMovie())
 	}, [match.params.id])
 
@@ -186,57 +186,6 @@ const Movie = ({ match, location }) => {
 		return <Loader />
 	}
 
-	function renderBack() {
-		return (
-			<div onClick={history.goBack}>
-				<Button title="Go back" solid left icon="arrow-left" />
-			</div>
-		)
-	}
-
-	const renderWebsite = (link) => {
-		if (!link) {
-			return null
-		}
-		return (
-			<AWrapper target="_blank" href={link}>
-				<Button title="Website" icon="link" />
-			</AWrapper>
-		)
-	}
-
-	const renderImdb = (id) => {
-		if (!id) {
-			return null
-		}
-		return (
-			<AWrapper target="_blank" href={`https://www.imdb.com/title/${id}`}>
-				<Button title="IMDB" icon={["fab", "imdb"]} />
-			</AWrapper>
-		)
-	}
-
-	const renderTrailer = (videos) => {
-		if (videos.length === 0) {
-			return
-		}
-		const { key } = videos.find(
-			(video) => video.type === "Trailer" && video.site === "YouTube"
-		)
-		return (
-			<React.Fragment>
-				<div onClick={() => setmodalOpened(true)}>
-					<Button title="Trailer" icon="play" />
-				</div>
-				<ModalVideo
-					channel="youtube"
-					isOpen={modalOpened}
-					videoId={key}
-					onClose={() => setmodalOpened(false)}
-				/>
-			</React.Fragment>
-		)
-	}
 
 	return (
 		<React.Fragment>
@@ -282,12 +231,12 @@ const Movie = ({ match, location }) => {
 							: "There is no synopsis available..."}
 					</Text>
 					<Heading>The Cast</Heading>
-					<Credits cast={movie.cast} baseUrl={base_url} />
+					<Cast cast={movie.cast} baseUrl={base_url} />
 					<ButtonsWrapper>
 						<LeftButtons>
 							{renderWebsite(movie.homepage)}
 							{renderImdb(movie.imdb_id)}
-							{renderTrailer(movie.videos.results)}
+							{renderTrailer(movie.videos.results, modalOpened, setmodalOpened)}
 						</LeftButtons>
 						{renderBack()}
 					</ButtonsWrapper>
@@ -295,6 +244,64 @@ const Movie = ({ match, location }) => {
 			</MovieWrapper>
 			<Header title="Recommended" subtitle="movies" />
 			{renderRecommended(recommended, base_url)}
+		</React.Fragment>
+	)
+}
+
+//Render the back button if user was pushed into page
+function renderBack() {
+	if (history.action === "PUSH") {
+		return (
+			<div onClick={history.goBack}>
+				<Button title="Go back" solid left icon="arrow-left" />
+			</div>
+		)
+	}
+}
+
+// Render Personal Website button
+function renderWebsite(link) {
+	if (!link) {
+		return null
+	}
+	return (
+		<AWrapper target="_blank" href={link}>
+			<Button title="Website" icon="link" />
+		</AWrapper>
+	)
+}
+
+// Render IMDB button
+function renderImdb(id) {
+	if (!id) {
+		return null
+	}
+	return (
+		<AWrapper target="_blank" href={`https://www.imdb.com/title/${id}`}>
+			<Button title="IMDB" icon={["fab", "imdb"]} />
+		</AWrapper>
+	)
+}
+
+// Render Trailer button. On click triggers state to open modal of trailer
+function renderTrailer(videos, modalOpened, setmodalOpened) {
+	if (videos.length === 0) {
+		return
+	}
+	const { key } = videos.find(
+		(video) => video.type === "Trailer" && video.site === "YouTube"
+	)
+	return (
+		<React.Fragment>
+			<div onClick={() => setmodalOpened(true)}>
+				<Button title="Trailer" icon="play" />
+			</div>
+			<ModalVideo
+				channel="youtube"
+				isOpen={modalOpened}
+				videoId={key}
+				onClose={() => setmodalOpened(false)}
+			/>
 		</React.Fragment>
 	)
 }
@@ -307,7 +314,6 @@ function splitYear(date) {
 	const [year] = date.split("-")
 	return year
 }
-
 function renderInfo(languages, time, data) {
 	const info = [time, data]
 	if (languages.length !== 0) {

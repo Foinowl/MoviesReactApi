@@ -11,7 +11,7 @@ import Discover from "./Discover"
 import Genre from "./Genre"
 import Search from "./Search"
 import Movie from "./Movie"
-import Cast from "./Cast"
+import Person from "./Person"
 
 import NotFound from "../components/NotFound"
 import Home from "../components/Home"
@@ -104,7 +104,7 @@ const App = () => {
 							<Route path="/discover/:name" exact component={Discover} />
 							<Route path="/search/:query" exact component={Search} />
 							<Route path="/movie/:id" exact component={Movie} />
-							<Route path="/cast/:id" exact component={Cast} />
+							<Route path="/person/:id" exact component={Person} />
 							<Route
 								path="/404"
 								component={() => (

@@ -11,11 +11,11 @@ const Wrapper = styled.div`
 	margin-bottom: 5rem;
 `
 
-const Credits = ({ cast, baseUrl }) => {
+const Cast = ({ cast, baseUrl }) => {
 	if (!cast) {
 		return <Loader />
 	}
-  const [currentItem, setCurrentItem] = useState(0)
+	const [currentItem, setCurrentItem] = useState(0)
 	const [totalShow, setTotalShow] = useState(1)
 	const sliderElement = useRef()
 
@@ -61,4 +61,4 @@ const Credits = ({ cast, baseUrl }) => {
 	)
 }
 
-export default Credits
+export default Cast
