@@ -49,6 +49,10 @@ function useFetchMoviesGenre(name, getMoviesGenre, params, sort, clearMovies) {
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(getMoviesGenre(name, params.page, sort))
+		window.scrollTo({
+				top: (0, 0),
+				behavior: "smooth",
+			})
 		return () => dispatch(clearMovies())
 	}, [name, params.page, sort])
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
@@ -23,7 +23,6 @@ import Loader from "../components/Loader"
 import MoviesList from "../components/MoviesList"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
 
 import ModalVideo from "react-modal-video"
 
@@ -170,6 +169,10 @@ const Movie = ({ match, location }) => {
 	const params = queryString.parse(location.search)
 	useEffect(() => {
 		dispatch(getMovie(match.params.id))
+		window.scrollTo({
+				top: (0, 0),
+				behavior: "smooth",
+			})
 		return () => dispatch(clearMovie())
 	}, [match.params.id])
 
@@ -184,13 +187,12 @@ const Movie = ({ match, location }) => {
 	}
 
 	function renderBack() {
-      return (
-				<div onClick={history.goBack}>
-					<Button title="Go back" solid left icon="arrow-left" />
-				</div>
-			)
+		return (
+			<div onClick={history.goBack}>
+				<Button title="Go back" solid left icon="arrow-left" />
+			</div>
+		)
 	}
-
 
 	const renderWebsite = (link) => {
 		if (!link) {
@@ -265,7 +267,7 @@ const Movie = ({ match, location }) => {
 						</RatingsWrapper>
 						<Info>
 							{renderInfo(
-								movie.spoken_languages[0].name,
+								movie.spoken_languages,
 								movie.runtime,
 								splitYear(movie.release_date)
 							)}
@@ -297,17 +299,20 @@ const Movie = ({ match, location }) => {
 	)
 }
 
-
 // Function to get the year only from the date
 function splitYear(date) {
 	if (!date) {
 		return
 	}
-	const [year] = date.split('-');
-	return year;
+	const [year] = date.split("-")
+	return year
 }
 
-function renderInfo(...info) {
+function renderInfo(languages, time, data) {
+	const info = [time, data]
+	if (languages.length !== 0) {
+		info.push(languages[0].name)
+	}
 	return info
 		.filter((el) => el !== null)
 		.map((el) => (typeof el === "number" ? `${el} min.` : el))
@@ -315,7 +320,7 @@ function renderInfo(...info) {
 }
 
 function renderGenres(genres) {
-  return genres.map((genre) => (
+	return genres.map((genre) => (
 		<StyledLink to={`/genres/${genre.name}`} key={genre.id}>
 			<FontAwesomeIcon
 				icon="dot-circle"

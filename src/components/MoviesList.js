@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useEffect } from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import ReactCSSTransitionGroup from "react-addons-css-transition-group"
@@ -21,17 +21,26 @@ const MoviesList = ({ movies, baseUrl }) => {
 	if (movies.results.length === 0) {
 		return null
 	}
+
+	const Element = useRef()
+
+	const scrollToMyRef = () => {
+		window.scrollTo({
+			top: (0, Element.current.offsetTop),
+			behavior: "smooth",
+		})
+	}
+
 	return (
 		<React.Fragment>
-			<MoviesWrapper>
+			<MoviesWrapper ref={Element}>
 				{movies.results.map((movie) => (
 					<MovieItem key={movie.id} movie={movie} baseUrl={baseUrl} />
 				))}
 			</MoviesWrapper>
-			<Pagination movies={movies} />
+			<Pagination movies={movies} scrollToMyRef={scrollToMyRef} />
 		</React.Fragment>
 	)
 }
-
 
 export default MoviesList

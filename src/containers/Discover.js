@@ -20,6 +20,10 @@ const Discover = ({ match, location }) => {
 
 	useEffect(() => {
 		dispatch(setSelectedMenu(match.params.name))
+		window.scrollTo({
+				top: (0, 0),
+				behavior: "smooth",
+			})
 		return () => {
 			dispatch(setSelectedMenu())
 				}
@@ -51,6 +55,10 @@ function useFetchMoviesDiscover(name, getMoviesDiscover, params, clearMovies) {
 	const query = name.replace(/\s+/g, "_").toLowerCase()
 	useEffect(() => {
 		dispatch(getMoviesDiscover(query, params.page))
+		window.scrollTo({
+				top: (0, 0),
+				behavior: "smooth",
+			})
 		return () => dispatch(clearMovies())
 	}, [query, params.page])
 }

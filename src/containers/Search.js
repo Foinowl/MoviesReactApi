@@ -42,6 +42,10 @@ function useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies) {
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(getMoviesSearch(query, params.page))
+		window.scrollTo({
+				top: (0, 0),
+				behavior: "smooth",
+			})
 		return () => dispatch(clearMovies())
 	}, [query, params.page])
 }
