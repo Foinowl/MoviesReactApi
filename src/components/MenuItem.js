@@ -13,10 +13,19 @@ const StyledItem = styled.div`
 	font-weight: 600;
 	line-height: 1;
 	opacity: ${(props) => (props.selected ? "1" : ".6")};
-	color: ${(props) =>
-		props.selected
-			? "var(--color-primary-dark)"
-			: "var(--color-primary-light)"};
+	color: ${(props) => {
+		if (props.mobile) {
+			if (props.selected) {
+				return "var(--text-color)"
+			}
+			return "rgba(255, 255, 255, .7)"
+		} else {
+			if (props.selected) {
+				return "var(--color-primary-dark)"
+			}
+			return "var(--color-primary-light)"
+		}
+	}};
 	border-color: ${(props) =>
 		props.selected
 			? "var(--color-primary-dark)"
@@ -30,8 +39,8 @@ const StyledItem = styled.div`
 	width: 100%;
 	cursor: pointer;
 	transition: all 100ms cubic-bezier(0.075, 0.82, 0.165, 1);
-	:not(:last-child) {
-		margin-bottom: 1rem;
+	&:not(:last-child) {
+		margin-bottom: 3rem;
 	}
 	&:hover {
 		border: 1px solid;
@@ -51,9 +60,9 @@ function renderIcon(title) {
 	}
 }
 
-const MenuItem = ({ title, selected }) => {
+const MenuItem = ({ title, selected, mobile }) => {
 	return (
-		<StyledItem selected={selected}>
+		<StyledItem selected={selected} mobile={mobile}>
 			<FontAwesomeIcon
 				icon={renderIcon(title)}
 				size="1x"

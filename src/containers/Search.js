@@ -29,6 +29,13 @@ const Search = ({ match, location}) => {
 
 	useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies)
 
+	useEffect(() => {
+		window.scrollTo({
+			top: (0, 0),
+			behavior: "smooth",
+		})
+	}, [])
+
 	if (movies.loading) {
 		return <Loader />
 	} else if (movies.total_results === 0) {
@@ -51,11 +58,11 @@ const Search = ({ match, location}) => {
 function useFetchMoviesSearch(query, getMoviesSearch, params, clearMovies) {
 	const dispatch = useDispatch()
 	useEffect(() => {
-		dispatch(getMoviesSearch(query, params.page))
 		window.scrollTo({
-				top: (0, 0),
-				behavior: "smooth",
-			})
+			top: (0, 0),
+			behavior: "smooth",
+		})
+		dispatch(getMoviesSearch(query, params.page))
 		return () => dispatch(clearMovies())
 	}, [query, params.page])
 }

@@ -17,6 +17,8 @@ import MoviesList from "../components/MoviesList"
 import Button from "../components/Button"
 import PersonAvatar from "../svg/person.svg"
 
+import { device } from "../utils/_devices"
+
 const PersonWrapper = styled.div`
 	display: flex;
 	align-items: center;
@@ -24,22 +26,74 @@ const PersonWrapper = styled.div`
 	width: 100%;
 	max-width: 120rem;
 	margin: 0 auto;
-	margin-bottom: 4rem;
+	margin-bottom: 7rem;
 	opacity: ${(props) => (props.loaded ? "1" : "0")};
 	visibility: ${(props) => (props.loaded ? "visible" : "hidden")};
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+
+	@media only screen and ${device.largest} {
+		max-width: 105rem;
+	}
+	@media only screen and ${device.larger} {
+		max-width: 110rem;
+		margin-bottom: 6rem;
+	}
+	@media only screen and ${device.large} {
+		max-width: 110rem;
+		margin-bottom: 5rem;
+	}
+	@media only screen and ${device.medium} {
+		flex-direction: column;
+		margin-bottom: 3rem;
+	}
+`
+const Wrapper = styled.div`
+	display: flex;
+	width: 100%;
+	flex-direction: column;
 `
 
 const PersonDetails = styled.div`
 	width: 60%;
-	padding: 5rem;
+	padding: 4rem;
 	flex: 1 1 60%;
+
+	@media only screen and ${device.largest} {
+		padding: 3rem;
+	}
+	@media only screen and ${device.large} {
+		padding: 2rem;
+	}
+	@media only screen and ${device.smaller} {
+		padding: 1rem;
+	}
+	@media only screen and ${device.smallest} {
+		padding: 0rem;
+	}
+	@media only screen and ${device.medium} {
+		width: 100%;
+		flex: 1 1 100%;
+	}
 `
 
 const ImageWrapper = styled.div`
 	width: 40%;
 	flex: 1 1 40%;
-	padding: 2rem;
+	padding: 4rem;
+
+	@media only screen and ${device.largest} {
+		padding: 3rem;
+	}
+	@media only screen and ${device.large} {
+		padding: 2rem;
+	}
+	@media only screen and ${device.smaller} {
+		margin-bottom: 2rem;
+	}
+	@media only screen and ${device.medium} {
+		width: 60%;
+		flex: 1 1 60%;
+	}
 `
 
 const MovieImg = styled.img`
@@ -47,10 +101,14 @@ const MovieImg = styled.img`
 	height: ${(props) => (props.error ? "58rem" : "auto")};
 	object-fit: ${(props) => (props.error ? "contain" : "cover")};
 	padding: ${(props) => (props.error ? "2rem" : "")};
-	max-width: 90%;
+	max-width: 100%;
 	border-radius: 0.8rem;
 	box-shadow: ${(props) =>
 		props.error ? "none" : "0rem 2rem 5rem var(--shadow-color-dark);"};
+
+	@media only screen and ${device.medium} {
+		font-size: 1.2rem;
+	}
 `
 
 const HeaderWrapper = styled.div`
@@ -86,6 +144,11 @@ const Text = styled.p`
 const ButtonsWrapper = styled.div`
 	display: flex;
 	align-items: center;
+
+	@media only screen and ${device.small} {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `
 
 const LeftButtons = styled.div`
@@ -93,6 +156,14 @@ const LeftButtons = styled.div`
 	display: flex;
 	& > *:not(:last-child) {
 		margin-right: 2rem;
+	}
+
+	@media only screen and ${device.small} {
+		margin-bottom: 2rem;
+
+		@media only screen and ${device.large} {
+			margin-right: 1rem;
+		}
 	}
 `
 
@@ -103,7 +174,7 @@ const AWrapper = styled.a`
 const Person = ({ location, match }) => {
 	const person = useSelector((state) => state.person)
 	const geral = useSelector((state) => state.geral)
-	const moviesPerson = useSelector(state => state.moviesPerson)
+	const moviesPerson = useSelector((state) => state.moviesPerson)
 	const dispatch = useDispatch()
 
 	const [loaded, setLoaded] = useState(false)
@@ -111,13 +182,21 @@ const Person = ({ location, match }) => {
 	const { base_url } = geral.base.images
 	const params = queryString.parse(location.search)
 
-	// Fetch person when id on url changes
+	// When mounts go up
 	useEffect(() => {
-		dispatch(getPerson(match.params.id))
 		window.scrollTo({
 			top: (0, 0),
 			behavior: "smooth",
 		})
+	}, [])
+
+	// Fetch person when id on url changes
+	useEffect(() => {
+		window.scrollTo({
+			top: (0, 0),
+			behavior: "smooth",
+		})
+		dispatch(getPerson(match.params.id))
 		return () => dispatch(clearPerson())
 	}, [match.params.id])
 
@@ -133,7 +212,7 @@ const Person = ({ location, match }) => {
 	}
 
 	return (
-		<React.Fragment>
+		<Wrapper>
 			<PersonWrapper loaded={loaded ? 1 : 0}>
 				<ImageWrapper>
 					<MovieImg
@@ -174,7 +253,7 @@ const Person = ({ location, match }) => {
 			</PersonWrapper>
 			<Header title="Also enters in" subtitle="movies" />
 			{renderPersonMovies(moviesPerson, base_url)}
-		</React.Fragment>
+		</Wrapper>
 	)
 }
 
@@ -233,7 +312,5 @@ function renderPersonMovies(moviesPerson, base_url) {
 		return <MoviesList movies={moviesPerson} baseUrl={base_url} />
 	}
 }
-
-
 
 export default Person

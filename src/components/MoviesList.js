@@ -1,7 +1,5 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef } from "react"
 import styled from "styled-components"
-import { Link } from "react-router-dom"
-import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 
 import MovieItem from "./MovieItem"
 import Pagination from "./Pagination"

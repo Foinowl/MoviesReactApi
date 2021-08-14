@@ -21,7 +21,7 @@ import Header from "../components/Header"
 import Loader from "../components/Loader"
 import SearchBar from "../components/SearchBar"
 
-import StickyBox from "react-sticky-box"
+import { device } from "../utils/_devices"
 
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
@@ -64,9 +64,11 @@ library.add(
 
 const MainWrapper = styled.div`
 	display: flex;
+	position: relative;
 	align-items: flex-start;
-	user-select: none;
 	height: 100%;
+	width: 100%;
+	user-select: none;
 `
 
 const ContentWrapper = styled.div`
@@ -78,7 +80,14 @@ const ContentWrapper = styled.div`
 	align-items: center;
 	justify-content: center;
 	padding: 6rem 4rem;
-	position: relative;
+
+	@media only screen and ${device.large} {
+		margin-top: 2rem;
+		padding: 6rem 2rem;
+	}
+	@media only screen and ${device.large3} {
+		padding: 6rem 3rem;
+	}
 `
 const App = () => {
 	const dispatch = useDispatch()
@@ -98,9 +107,7 @@ const App = () => {
 		<Router history={history}>
 			<React.Fragment>
 				<MainWrapper>
-					<StickyBox>
-						<Sidebar />
-					</StickyBox>
+					<Sidebar />
 					<ContentWrapper>
 						<SearchBar />
 						<Header />

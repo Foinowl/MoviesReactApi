@@ -8,12 +8,11 @@ import Loader from "../components/Loader"
 import Header from "../components/Header"
 import styled from "styled-components"
 
-
 const Wrapper = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-`;
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+`
 
 const Genre = ({ match, location }) => {
 	const dispatch = useDispatch()
@@ -24,28 +23,27 @@ const Genre = ({ match, location }) => {
 
 	const params = queryString.parse(location.search)
 
-	  const [option, setOption] = useState({
-			value: "popularity.desc",
-			label: "Popularity",
-		})
+	const [option, setOption] = useState({
+		value: "popularity.desc",
+		label: "Popularity",
+	})
 
 	useEffect(() => {
 		dispatch(setSelectedMenu(match.params.name))
 		return () => dispatch(setSelectedMenu())
 	}, [match.params.name])
-	  useFetchMoviesGenre(
-			match.params.name,
-			getMoviesGenre,
-			params,
-			option,
-			clearMovies
-		)
-
+	useFetchMoviesGenre(
+		match.params.name,
+		getMoviesGenre,
+		params,
+		option,
+		clearMovies
+	)
 
 	if (movies.loading) {
 		return <Loader />
 	}
-  return (
+	return (
 		<Wrapper>
 			<Header title={geral.selected} subtitle="movies" />
 			<SortBy option={option} setOption={setOption} />
@@ -54,24 +52,43 @@ const Genre = ({ match, location }) => {
 	)
 }
 
-
 function useFetchMoviesGenre(
 	genre,
 	getMoviesGenre,
 	params,
 	option,
-	clearMovies
+	clearMovies,
+	match,
+	location
 ) {
 	const dispatch = useDispatch()
+	// When mounts go up
 	useEffect(() => {
-		dispatch(getMoviesGenre(genre, params.page, option.value))
 		window.scrollTo({
 			top: (0, 0),
 			behavior: "smooth",
 		})
+	}, [])
+
+	// Send url to setSelected Action Creator, it will check if is valid, and set the header accordingly
+	useEffect(() => {
+		window.scrollTo({
+			top: (0, 0),
+			behavior: "smooth",
+		})
+		setSelectedMenu(match.params.name)
+		// Clean up to remove selected menu from state
+		return () => setSelectedMenu()
+	}, [match.params.name])
+
+	useEffect(() => {
+		window.scrollTo({
+			top: (0, 0),
+			behavior: "smooth",
+		})
+		dispatch(getMoviesGenre(genre, params.page, option.value))
 		return () => dispatch(clearMovies())
 	}, [genre, params.page, option])
 }
-
 
 export default Genre

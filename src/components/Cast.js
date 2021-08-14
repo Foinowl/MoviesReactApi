@@ -2,13 +2,17 @@ import React, { useState, useRef, useEffect } from "react"
 import ItemsCarousel from "react-items-carousel"
 import Loader from "./Loader"
 import CastItem from "./CastItem"
-import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
+import { device } from "../utils/_devices"
 
 const Wrapper = styled.div`
 	margin-bottom: 5rem;
+	@media only screen and ${device.medium} {
+		width: 90%;
+		margin: 0 auto;
+		margin-bottom: 3rem;
+	}
 `
 
 const Cast = ({ cast, baseUrl }) => {
@@ -21,7 +25,7 @@ const Cast = ({ cast, baseUrl }) => {
 
 	// Set amount of items to show on slider based on the width of the element
 	const changeTotalShow = () => {
-		const totalItems = Math.round(sliderElement.current.offsetWidth / 60)
+		const totalItems = Math.round(sliderElement.current.offsetWidth / 70)
 		setTotalShow(totalItems)
 	}
 

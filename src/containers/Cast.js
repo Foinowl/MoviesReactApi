@@ -6,6 +6,7 @@ import history from "../history"
 import { getPerson } from "../actions"
 import Loader from "../components/Loader"
 
+
 const ImgWrapper = styled.img`
 	width: 200px;
 	height: auto;
