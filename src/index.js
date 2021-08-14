@@ -9,7 +9,6 @@ import reducers from "./reducers"
 import { ThemeProvider } from 'styled-components';
 import theme from './theme';
 import GlobalStyle from './globals';
-import { device } from "./utils/_devices"
 
 import "../node_modules/react-modal-video/scss/modal-video.scss"
 

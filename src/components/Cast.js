@@ -50,6 +50,7 @@ const Cast = ({ cast, baseUrl }) => {
 				showSlither={false}
 				firstAndLastGutter={false}
 				freeScrolling={false}
+				swipeToSlide={true}
 				// Active item configurations
 				requestToChangeActive={changeActiveItem}
 				activeItemIndex={currentItem}
