@@ -35,7 +35,6 @@ const Wrapper = styled.div`
 	display: flex;
 	width: 100%;
 	flex-direction: column;
-
 `
 
 const MovieWrapper = styled.div`
@@ -269,23 +268,22 @@ const Movie = ({ match, location }) => {
 		})
 	}, [])
 
+	// Fetch movie id when id on the url changes
 	useEffect(() => {
-		window.scrollTo({
-			top: (0, 0),
-			behavior: "smooth",
+		scroll.scrollToTop({
+			smooth: true,
+			delay: 500,
 		})
+
 		dispatch(getMovie(match.params.id))
+		dispatch(getRecommendations(match.params.id, params.page))
+
 		return () => {
-			dispatch(clearMovie()) 
+			dispatch(clearMovie())
+			dispatch(clearRecommendations())
 			setLoaded(false)
 		}
 	}, [match.params.id])
-
-	// Fetch recommended movies everytime recommendations page change
-	useEffect(() => {
-		dispatch(getRecommendations(match.params.id, params.page))
-		return () => dispatch(clearRecommendations())
-	}, [params.page])
 
 	if (movie.loading) {
 		return <Loader />
