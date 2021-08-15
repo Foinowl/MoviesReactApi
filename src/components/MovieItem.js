@@ -130,7 +130,7 @@ const MovieItem = ({ movie, baseUrl }) => {
 		<MovieWrapper loaded={loaded ? 1 : 0} to={`/movie/${movie.id}`}>
 			<MovieImg
 				error={error ? 1 : 0}
-				src={`${baseUrl}w780${movie.poster_path}`}
+				src={`${baseUrl}w342${movie.poster_path}`}
 				onLoad={() => setLoaded(true)}
 				onError={(e) => {
 					setError(true)

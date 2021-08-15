@@ -25,7 +25,10 @@ const Cast = ({ cast, baseUrl }) => {
 
 	// Set amount of items to show on slider based on the width of the element
 	const changeTotalShow = () => {
-		const totalItems = Math.round(sliderElement.current.offsetWidth / 70)
+		let totalItems = Math.round(sliderElement.current.offsetWidth / 70)
+		if (totalItems > cast.length) {
+			totalItems = cast.length
+		}
 		setTotalShow(totalItems)
 	}
 
