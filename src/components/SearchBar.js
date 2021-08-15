@@ -3,14 +3,6 @@ import styled from "styled-components"
 import history from "../history"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
-
-const SearhBarWrapper = styled.div`
-	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 2rem;
-`
 
 const Form = styled.form`
 	position: relative;
@@ -27,11 +19,13 @@ const Form = styled.form`
 	outline: none;
 	border-radius: 10rem;
 	transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
-
 	@media ${(props) => props.theme.mediaQueries.large} {
 		background-color: var(--color-primary);
 		border: 1px solid transparent;
 		padding: 1.5rem;
+	}
+	@media ${(props) => props.theme.mediaQueries.smallest} {
+		max-width: 25rem;
 	}
 `
 
@@ -45,6 +39,15 @@ const Input = styled.input`
 	color: var(--text-color);
 	border: none;
 	transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+	@media ${(props) => props.theme.mediaQueries.large} {
+		font-size: 13px;
+	}
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		font-size: 12px;
+	}
+	@media ${(props) => props.theme.mediaQueries.small} {
+		font-size: 11px;
+	}
 	&:focus,
 	&:active {
 		outline: none;
@@ -52,35 +55,20 @@ const Input = styled.input`
 	&::placeholder {
 		color: var(--text-color);
 	}
-
-	@media ${(props) => props.theme.mediaQueries.large} {
-		font-size: 13px;
-	}
-
-	@media ${(props) => props.theme.mediaQueries.medium} {
-		font-size: 12px;
-	}
-
-	@media ${(props) => props.theme.mediaQueries.small} {
-		font-size: 11px;
-	}
 `
 
 const Button = styled.button`
 	line-height: 1;
 	pointer-events: ${(props) => (props.state ? "auto" : "none")};
 	cursor: ${(props) => (props.state ? "pointer" : "none")};
-	transition: all 0.2s cubic-bezier(0.42, 0, 0.58, 1);
 	background-color: transparent;
 	border: none;
 	outline: none;
 	color: var(--text-color);
-
 	@media ${(props) => props.theme.mediaQueries.large} {
 		color: var(--text-color);
 		font-size: 10px;
 	}
-	
 	@media ${(props) => props.theme.mediaQueries.small} {
 		color: var(--text-color);
 		font-size: 8px;
@@ -96,7 +84,7 @@ const SearchBar = () => {
 	useEffect(() => {
 		// add when mounted
 		document.addEventListener("mousedown", handleClick)
-		// return function to be called when unmounted
+		// cleanup event when unmounted
 		return () => {
 			document.removeEventListener("mousedown", handleClick)
 		}
@@ -115,37 +103,35 @@ const SearchBar = () => {
 	function onFormSubmit(e) {
 		e.preventDefault()
 		if (input.length === 0) {
-			console.log("invalid")
 			return
 		}
 		setInput("")
+		setState(false)
 		history.push(`${process.env.PUBLIC_URL}/search/${input}`)
 	}
 
-	  return (
-			<SearhBarWrapper>
-				<Form
-					state={state}
-					onClick={() => {
-						setState(true)
-						inputFocus.current.focus()
-					}}
-					onSubmit={onFormSubmit}
-					ref={node}
-				>
-					<Button type="submit" state={state}>
-						<FontAwesomeIcon icon={"search"} size="1x" />
-					</Button>
-					<Input
-						onChange={(e) => setInput(e.target.value)}
-						ref={inputFocus}
-						value={input}
-						state={state}
-						placeholder="Search for a movie..."
-					/>
-				</Form>
-			</SearhBarWrapper>
-		)
+	return (
+		<Form
+			state={state}
+			onClick={() => {
+				setState(true)
+				inputFocus.current.focus()
+			}}
+			onSubmit={onFormSubmit}
+			ref={node}
+		>
+			<Button type="submit" state={state}>
+				<FontAwesomeIcon icon={"search"} size="1x" />
+			</Button>
+			<Input
+				onChange={(e) => setInput(e.target.value)}
+				ref={inputFocus}
+				value={input}
+				state={state}
+				placeholder="Search for a movie..."
+			/>
+		</Form>
+	)
 }
 
 export default SearchBar

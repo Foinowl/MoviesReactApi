@@ -1,12 +1,12 @@
 import React from "react"
 import Select from "react-select"
 
-
 const SortBy = ({ option, setOption }) => {
 	function handleChange(selectedOption) {
 		setOption(selectedOption)
 	}
-  return (
+
+	return (
 		<Select
 			theme={(theme) => ({
 				...theme,

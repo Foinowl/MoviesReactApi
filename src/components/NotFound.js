@@ -1,9 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import Button from "./Button"
 
 import NotfoundSvg from "../svg/empty.svg"
+import Button from "./Button"
 
 const Wrapper = styled.div`
 	width: 100%;
@@ -47,7 +47,6 @@ const Svg = styled.img`
 	height: 40vh;
 	margin-bottom: 6rem;
 `
-
 
 const NotFound = ({ title, subtitle }) => {
 	return (

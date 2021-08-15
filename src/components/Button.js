@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { device } from "../utils/_devices"
 
 const StyledButton = styled.button`
 	display: flex;
@@ -28,17 +27,6 @@ const StyledButton = styled.button`
 	box-shadow: ${(props) =>
 		props.solid ? "0 1rem 5rem var(--shadow-color)" : "none"};
 	transition: all 600ms cubic-bezier(0.075, 0.82, 0.165, 1);
-
-	@media only screen and ${device.large} {
-		padding: 1.2rem 2rem;
-	}
-	@media only screen and ${device.small} {
-		padding: 1.3rem 1.6rem;
-	}
-	@media only screen and ${device.smaller} {
-		padding: 1rem 1.3rem;
-	}
-	
 	&:hover {
 		transform: translateY(-3px);
 		background-color: ${(props) =>
@@ -53,11 +41,19 @@ const StyledButton = styled.button`
 			props.solid ? "none" : "0 1rem 5rem var(--shadow-color)"};
 		transition: all 600ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	}
+	@media ${(props) => props.theme.mediaQueries.large} {
+		padding: 1.2rem 2rem;
+	}
+	@media ${(props) => props.theme.mediaQueries.small} {
+		padding: 1.3rem 1.6rem;
+	}
+	@media ${(props) => props.theme.mediaQueries.smaller} {
+		padding: 1rem 1.3rem;
+	}
 	&:active {
 		transform: translateY(2px);
 	}
 `
-
 
 
 const Button = ({ title, solid, icon, left }) => {
@@ -72,5 +68,4 @@ const Button = ({ title, solid, icon, left }) => {
 		</StyledButton>
 	)
 }
-
 export default Button

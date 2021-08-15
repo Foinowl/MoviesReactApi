@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React from "react"
 import styled from "styled-components"
 
 import MovieItem from "./MovieItem"
@@ -12,7 +12,6 @@ const MoviesWrapper = styled.div`
 	align-items: start;
 	padding: 4rem 0;
 	grid-gap: 4rem 2rem;
-
 	@media ${(props) => props.theme.mediaQueries.small} {
 		grid-template-columns: repeat(auto-fit, minmax(10rem, 23rem));
 		justify-content: space-around;
@@ -29,23 +28,14 @@ const MoviesList = ({ movies, baseUrl }) => {
 		return null
 	}
 
-	const Element = useRef()
-
-	const scrollToMyRef = () => {
-		window.scrollTo({
-			top: (0, Element.current.offsetTop),
-			behavior: "smooth",
-		})
-	}
-
 	return (
 		<React.Fragment>
-			<MoviesWrapper ref={Element}>
+			<MoviesWrapper>
 				{movies.results.map((movie) => (
 					<MovieItem movie={movie} key={movie.id} baseUrl={baseUrl} />
 				))}
 			</MoviesWrapper>
-			<Pagination movies={movies} scrollToMyRef={scrollToMyRef} />
+			<Pagination movies={movies} />
 		</React.Fragment>
 	)
 }

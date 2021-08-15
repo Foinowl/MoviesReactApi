@@ -1,8 +1,6 @@
 import React from "react"
-
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
 
 const StyledItem = styled.div`
 	width: 100%;
@@ -33,10 +31,7 @@ const StyledItem = styled.div`
 	border: ${(props) =>
 		props.selected ? "1px solid" : "1px solid transparent"};
 	border-radius: 2rem;
-	display: flex;
-	align-items: center;
 	text-decoration: none;
-	width: 100%;
 	cursor: pointer;
 	transition: all 100ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	&:not(:last-child) {

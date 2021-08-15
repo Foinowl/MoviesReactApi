@@ -53,7 +53,6 @@ const MovieImg = styled.img`
 		border-radius: 0.8rem 0.8rem 0rem 0rem;
 		box-shadow: none;
 	}
-
 	@media ${(props) => props.theme.mediaQueries.smaller} {
 		height: 28rem;
 	}
@@ -71,7 +70,6 @@ const ImgLoading = styled.div`
 	transition: all 100ms cubic-bezier(0.645, 0.045, 0.355, 1);
 `
 
-
 const Title = styled.h2`
 	text-align: center;
 	font-size: 1.3rem;
@@ -83,10 +81,6 @@ const Title = styled.h2`
 	${MovieWrapper}:hover & {
 		color: var(--text-color);
 	}
-
-	@media ${(props) => props.theme.mediaQueries.smaller} {
-		padding: 1.5rem 1.5rem;
-	}
 `
 
 const DetailsWrapper = styled.div`
@@ -95,6 +89,9 @@ const DetailsWrapper = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	padding: 1.5rem 3rem;
+	@media ${(props) => props.theme.mediaQueries.smaller} {
+		padding: 1.5rem 1.5rem;
+	}
 `
 
 const RatingsWrapper = styled.div`
@@ -109,37 +106,37 @@ const RatingsWrapper = styled.div`
 `
 
 const Tooltip = styled.span`
-  visibility: hidden;
-  opacity: 0;
-  width: 120px;
-  font-weight: 500;
-  font-size: 1.1rem;
-  background-color: var(--color-primary-light);
-  color: var(--text-color);
-  text-align: center;
-  border-radius: 6px;
-  padding: 1rem;
-  position: absolute;
-  z-index: 999;
-  bottom: 150%;
-  left: 50%;
-  margin-left: -60px;
-  transition: all 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    transition: all 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
-    border-color: var(--color-primary-light) transparent transparent transparent;
-  }
-  ${RatingsWrapper}:hover & {
-    visibility: visible;
-    opacity: 1;
-  }
+	visibility: hidden;
+	opacity: 0;
+	width: 120px;
+	font-weight: 500;
+	font-size: 1.1rem;
+	background-color: var(--color-primary-light);
+	color: var(--text-color);
+	text-align: center;
+	border-radius: 6px;
+	padding: 1rem;
+	position: absolute;
+	z-index: 999;
+	bottom: 150%;
+	left: 50%;
+	margin-left: -60px;
+	transition: all 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
+	&::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+		transition: all 200ms cubic-bezier(0.645, 0.045, 0.355, 1);
+		border-color: var(--color-primary-light) transparent transparent transparent;
+	}
+	${RatingsWrapper}:hover & {
+		visibility: visible;
+		opacity: 1;
+	}
 `
 
 // Function to render list of movies
@@ -150,7 +147,7 @@ const MovieItem = ({ movie, baseUrl }) => {
 	useEffect(() => {
 		return () => setLoaded(false)
 	}, [])
-	
+
 	return (
 		<LazyLoad height={200} offset={200}>
 			<MovieWrapper to={`${process.env.PUBLIC_URL}/movie/${movie.id}`}>
@@ -186,6 +183,5 @@ const MovieItem = ({ movie, baseUrl }) => {
 		</LazyLoad>
 	)
 }
-
 
 export default MovieItem

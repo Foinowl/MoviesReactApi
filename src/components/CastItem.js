@@ -9,6 +9,7 @@ const LinkWrapper = styled(Link)`
 	height: 100%;
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	opacity: ${(props) => (props.loaded ? "1" : "0")};
 	visibility: ${(props) => (props.loaded ? "visible" : "hidden")};
 `
@@ -24,7 +25,6 @@ const MovieImg = styled.img`
 
 const CastItem = ({ person, baseUrl }) => {
 	const [loaded, setLoaded] = useState(false)
-	const [error, setError] = useState(false)
 
 	return (
 		<LinkWrapper
@@ -32,7 +32,6 @@ const CastItem = ({ person, baseUrl }) => {
 			to={`${process.env.PUBLIC_URL}/person/${person.id}`}
 		>
 			<MovieImg
-				error={error ? 1 : 0}
 				src={`${baseUrl}w185${person.profile_path}`}
 				// Image loaded, set loaded to true
 				onLoad={() => setLoaded(true)}
