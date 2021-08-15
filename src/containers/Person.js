@@ -50,7 +50,7 @@ const PersonWrapper = styled.div`
 	}
 	@media ${(props) => props.theme.mediaQueries.medium} {
 		flex-direction: column;
-		margin-bottom: 3rem;
+		margin-bottom: 5rem;
 	}
 `
 

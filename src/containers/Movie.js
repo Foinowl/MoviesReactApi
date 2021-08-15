@@ -62,7 +62,7 @@ const MovieWrapper = styled.div`
 	}
 	@media only screen and ${device.medium} {
 		flex-direction: column;
-		margin-bottom: 3rem;
+		margin-bottom: 5rem;
 	}
 `
 

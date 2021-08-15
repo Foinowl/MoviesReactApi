@@ -36,7 +36,7 @@ const Form = styled.form`
 `
 
 const Input = styled.input`
-	font-size: 1.3rem;
+	font-size: 14px;
 	line-height: 1;
 	font-weight: 300;
 	background-color: transparent;
@@ -56,6 +56,14 @@ const Input = styled.input`
 	@media ${(props) => props.theme.mediaQueries.large} {
 		font-size: 13px;
 	}
+
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		font-size: 12px;
+	}
+
+	@media ${(props) => props.theme.mediaQueries.small} {
+		font-size: 11px;
+	}
 `
 
 const Button = styled.button`
@@ -71,6 +79,11 @@ const Button = styled.button`
 	@media ${(props) => props.theme.mediaQueries.large} {
 		color: var(--text-color);
 		font-size: 10px;
+	}
+	
+	@media ${(props) => props.theme.mediaQueries.small} {
+		color: var(--text-color);
+		font-size: 8px;
 	}
 `
 
