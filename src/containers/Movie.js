@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react"
+import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
+import queryString from "query-string"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import history from "../history"
+import LazyLoad from "react-lazyload"
+import ModalVideo from "react-modal-video"
+import { Element, animateScroll as scroll } from "react-scroll"
 
 import {
 	getMovie,
@@ -9,27 +16,15 @@ import {
 	clearRecommendations,
 	clearMovie,
 } from "../actions"
-
-import history from "../history"
-import queryString from "query-string"
-
-import NothingSvg from "../svg/nothing.svg"
-import Header from "../components/Header"
 import Rating from "../components/Rating"
 import NotFound from "../components/NotFound"
-import Button from "../components/Button"
+import Header from "../components/Header"
 import Cast from "../components/Cast"
 import Loader from "../components/Loader"
 import MoviesList from "../components/MoviesList"
+import Button from "../components/Button"
+import NothingSvg from "../svg/nothing.svg"
 import Loading from "../components/Loading"
-
-import LazyLoad from "react-lazyload"
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
-import ModalVideo from "react-modal-video"
-
-import { device } from "../utils/_devices"
 
 const Wrapper = styled.div`
 	display: flex;
@@ -45,22 +40,19 @@ const MovieWrapper = styled.div`
 	max-width: 120rem;
 	margin: 0 auto;
 	margin-bottom: 7rem;
-	opacity: ${(props) => (props.loaded ? "1" : "0")};
-	visibility: ${(props) => (props.loaded ? "visible" : "hidden")};
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-
-	@media only screen and ${device.largest} {
+	@media ${(props) => props.theme.mediaQueries.largest} {
 		max-width: 105rem;
 	}
-	@media only screen and ${device.larger} {
+	@media ${(props) => props.theme.mediaQueries.larger} {
 		max-width: 110rem;
 		margin-bottom: 6rem;
 	}
-	@media only screen and ${device.large} {
+	@media ${(props) => props.theme.mediaQueries.large} {
 		max-width: 110rem;
 		margin-bottom: 5rem;
 	}
-	@media only screen and ${device.medium} {
+	@media ${(props) => props.theme.mediaQueries.medium} {
 		flex-direction: column;
 		margin-bottom: 5rem;
 	}
@@ -92,32 +84,29 @@ const StyledLink = styled(Link)`
 const LinksWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	font-weight: 700;
-	text-transform: uppercase;
-	margin-bottom: 1rem;
-	font-size: 1.4rem;
+	margin-bottom: 3rem;
 	flex-wrap: wrap;
 `
 
 const MovieDetails = styled.div`
-	width: 60%;
+	width: 100%;
+	max-width: 60%;
 	padding: 4rem;
 	flex: 1 1 60%;
-
-	@media only screen and ${device.largest} {
+	@media ${(props) => props.theme.mediaQueries.largest} {
 		padding: 3rem;
 	}
-	@media only screen and ${device.large} {
+	@media ${(props) => props.theme.mediaQueries.large} {
 		padding: 2rem;
 	}
-	@media only screen and ${device.smaller} {
+	@media ${(props) => props.theme.mediaQueries.smaller} {
 		padding: 1rem;
 	}
-	@media only screen and ${device.smallest} {
+	@media ${(props) => props.theme.mediaQueries.smallest} {
 		padding: 0rem;
 	}
-	@media only screen and ${device.medium} {
-		width: 100%;
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		max-width: 100%;
 		flex: 1 1 100%;
 	}
 `
@@ -130,18 +119,17 @@ const ImageWrapper = styled.div`
 	justify-content: center;
 	display: flex;
 	padding: 4rem;
-
-	@media only screen and ${device.largest} {
+	@media ${(props) => props.theme.mediaQueries.largest} {
 		padding: 3rem;
 	}
-	@media only screen and ${device.large} {
+	@media ${(props) => props.theme.mediaQueries.large} {
 		padding: 2rem;
 	}
-	@media only screen and ${device.smaller} {
+	@media ${(props) => props.theme.mediaQueries.smaller} {
 		margin-bottom: 2rem;
 	}
-	@media only screen and ${device.medium} {
-		width: 60%;
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		max-width: 60%;
 		flex: 1 1 60%;
 	}
 `
@@ -157,6 +145,20 @@ const MovieImg = styled.img`
 		props.error ? "none" : "0rem 2rem 5rem var(--shadow-color-dark)"};
 `
 
+const ImgLoading = styled.div`
+	width: 100%;
+	max-width: 40%;
+	flex: 1 1 40%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	transition: all 100ms cubic-bezier(0.645, 0.045, 0.355, 1);
+	@media ${(props) => props.theme.mediaQueries.smaller} {
+		height: 28rem;
+	}
+`
+
 const HeaderWrapper = styled.div`
 	margin-bottom: 2rem;
 `
@@ -166,6 +168,10 @@ const Heading = styled.h3`
 	font-weight: 700;
 	text-transform: uppercase;
 	margin-bottom: 1rem;
+	font-size: 1.4rem;
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		font-size: 1.2rem;
+	}
 `
 
 const DetailsWrapper = styled.div`
@@ -192,7 +198,7 @@ const Info = styled.div`
 	line-height: 1;
 	text-transform: uppercase;
 	color: var(--color-primary-lighter);
-	font-size: 1rem;
+	font-size: 1.3rem;
 `
 
 const Text = styled.p`
@@ -206,8 +212,7 @@ const Text = styled.p`
 const ButtonsWrapper = styled.div`
 	display: flex;
 	align-items: center;
-
-	@media only screen and ${device.small} {
+	@media ${(props) => props.theme.mediaQueries.small} {
 		flex-direction: column;
 		align-items: flex-start;
 	}
@@ -216,30 +221,14 @@ const ButtonsWrapper = styled.div`
 const LeftButtons = styled.div`
 	margin-right: auto;
 	display: flex;
-	@media only screen and ${device.small} {
+	@media ${(props) => props.theme.mediaQueries.small} {
 		margin-bottom: 2rem;
 	}
-
 	& > *:not(:last-child) {
 		margin-right: 2rem;
-
-		@media only screen and ${device.large} {
+		@media ${(props) => props.theme.mediaQueries.large} {
 			margin-right: 1rem;
 		}
-	}
-`
-
-const ImgLoading = styled.div`
-	width: 100%;
-	max-width: 40%;
-	flex: 1 1 40%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	transition: all 100ms cubic-bezier(0.645, 0.045, 0.355, 1);
-	@media ${(props) => props.theme.mediaQueries.smaller} {
-		height: 28rem;
 	}
 `
 
@@ -252,21 +241,12 @@ const Movie = ({ match, location }) => {
 	const geral = useSelector((store) => store.geral)
 	const movie = useSelector((store) => store.movie)
 	const recommended = useSelector((store) => store.recommended)
-	const { base_url } = geral.base.images
 
 	const [loaded, setLoaded] = useState(false)
 	const [error, setError] = useState(false)
 	const [modalOpened, setmodalOpened] = useState(false)
-
+	const { secure_base_url } = geral.base.images
 	const params = queryString.parse(location.search)
-
-	// When mounts go up
-	useEffect(() => {
-		window.scrollTo({
-			top: (0, 0),
-			behavior: "smooth",
-		})
-	}, [])
 
 	// Fetch movie id when id on the url changes
 	useEffect(() => {
@@ -283,14 +263,22 @@ const Movie = ({ match, location }) => {
 			dispatch(clearRecommendations())
 			setLoaded(false)
 		}
-	}, [match.params.id])
+	}, [match.params.id, params.page])
 
+	// If loading
 	if (movie.loading) {
 		return <Loader />
 	}
 
+	if (movie.status_code) {
+		history.push(process.env.PUBLIC_URL + "/404")
+	}
+
 	return (
 		<Wrapper>
+			<Helmet>
+				<title>{`${movie.title} - Movie Library`}</title>
+			</Helmet>
 			<LazyLoad height={500}>
 				<MovieWrapper>
 					{!loaded ? (
@@ -356,7 +344,7 @@ const Movie = ({ match, location }) => {
 				</MovieWrapper>
 			</LazyLoad>
 			<Header title="Recommended" subtitle="movies" />
-			{renderRecommended(recommended, base_url)}
+			{renderRecommended(recommended, secure_base_url)}
 		</Wrapper>
 	)
 }
@@ -366,7 +354,7 @@ function renderBack() {
 	if (history.action === "PUSH") {
 		return (
 			<div onClick={history.goBack}>
-				<Button title="Go back" solid left icon="arrow-left" />
+				<Button title="Back" solid left icon="arrow-left" />
 			</div>
 		)
 	}
@@ -427,6 +415,8 @@ function splitYear(date) {
 	const [year] = date.split("-")
 	return year
 }
+
+// Render info of movie
 function renderInfo(languages, time, data) {
 	const info = []
 	if (languages.length !== 0) {
@@ -439,6 +429,27 @@ function renderInfo(languages, time, data) {
 		.map((el, i, array) => (i !== array.length - 1 ? `${el} / ` : el))
 }
 
+// Render recommended movies
+function renderRecommended(recommended, base_url) {
+	if (recommended.loading) {
+		return <Loader />
+	} else if (recommended.total_results === 0) {
+		return (
+			<NotFound
+				title="Sorry!"
+				subtitle={`There are no recommended movies...`}
+			/>
+		)
+	} else {
+		return (
+			<Element name="scroll-to-element">
+				<MoviesList movies={recommended} baseUrl={base_url} />;
+			</Element>
+		)
+	}
+}
+
+// Render Genres with links
 function renderGenres(genres) {
 	return genres.map((genre) => (
 		<StyledLink
@@ -453,21 +464,6 @@ function renderGenres(genres) {
 			{genre.name}
 		</StyledLink>
 	))
-}
-
-function renderRecommended(recommended, base_url) {
-	if (recommended.loading) {
-		return <Loader />
-	} else if (recommended.total_results === 0) {
-		return (
-			<NotFound
-				title="Sorry!"
-				subtitle={`There are no recommended movies...`}
-			/>
-		)
-	} else {
-		return <MoviesList movies={recommended} baseUrl={base_url} />
-	}
 }
 
 export default Movie

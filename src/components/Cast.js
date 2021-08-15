@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 	margin-bottom: 5rem;
 `
 
-const Credits = ({ cast, baseUrl }) => {
+const Cast = ({ cast, baseUrl }) => {
 	if (!cast) {
 		return <Loader />
 	}
@@ -66,6 +66,7 @@ function NextArrow({ onClick }) {
 				width: "12px",
 				height: "12px",
 				padding: "0",
+				color: "#6921cc",
 				transform: "translate(0, -50%)",
 				cursor: "pointer",
 			}}
@@ -88,6 +89,7 @@ function PrevArrow({ onClick }) {
 				height: "12px",
 				padding: "0",
 				transform: "translate(0, -50%)",
+				color: "#6921cc",
 				cursor: "pointer",
 			}}
 			onClick={onClick}
@@ -97,4 +99,4 @@ function PrevArrow({ onClick }) {
 	)
 }
 
-export default Credits
+export default Cast

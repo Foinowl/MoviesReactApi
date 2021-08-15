@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { Helmet } from "react-helmet"
+import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import history from "../history"
+import { animateScroll as scroll } from "react-scroll"
 
 import { clearError } from "../actions"
 import ErrorSvg from "../svg/error.svg"
@@ -15,11 +17,15 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		width: 65%;
+	}
 `
 
 const TitleWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
+	text-align: center;
 	align-items: center;
 	margin-bottom: 6rem;
 `
@@ -47,10 +53,12 @@ const Svg = styled.img`
 `
 
 const ShowError = () => {
-	const dispatch = useDispatch()
-	const errors = useSelector(state => state.errors)
+	const errors = useSelector((state) => state.errors)
 	useEffect(() => {
-		return () => dispatch(clearError())
+		scroll.scrollToTop({
+			smooth: true,
+		})
+		return () => clearError()
 	}, [])
 
 	if (errors.length === 0) {
@@ -59,6 +67,9 @@ const ShowError = () => {
 	}
 	return (
 		<Wrapper>
+			<Helmet>
+				<title>Oooops!</title>
+			</Helmet>
 			<TitleWrapper>
 				<Title>Something went wrong!</Title>
 				<SubTitle>{errors.data.status_message}</SubTitle>

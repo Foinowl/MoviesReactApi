@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import StickyBox from "react-sticky-box"
-import { slide as Menu } from "react-burger-menu"
-import { device } from "../utils/_devices"
 
 import Logo from "../components/Logo"
 import MenuItem from "../components/MenuItem"
@@ -18,6 +16,7 @@ const Wrapper = styled.div`
 	color: var(--color-primary-dark);
 	border-right: 1px solid var(--border-color);
 `
+
 const Heading = styled.h2`
 	font-weight: 700;
 	font-size: 1.1rem;
@@ -36,50 +35,12 @@ const LinkWrap = styled(Link)`
 	margin-bottom: 0.5rem;
 `
 
-
-var styles = {
-	bmBurgerButton: {
-		position: "absolute",
-		width: "30px",
-		height: "25px",
-		left: "20px",
-		top: "20px",
-	},
-	bmBurgerBars: {
-		background: "#263238",
-	},
-	bmCrossButton: {
-		height: "24px",
-		width: "24px",
-	},
-	bmCross: {
-		background: "#fafafa",
-	},
-	bmMenuWrap: {
-		position: "fixed",
-		height: "100%",
-	},
-	bmMenu: {
-		background: "#161706",
-		padding: "2.5em 1.5em",
-	},
-	bmItemList: {
-		color: "#fafafa",
-		padding: "0.8rem",
-	},
-	bmItem: {
-		outline: "none",
-	},
-	bmOverlay: {
-		background: "rgba(0, 0, 0, 0.3)",
-	},
-}
 const Sidebar = () => {
 	const genres = useSelector((state) => state.geral.genres)
 	const staticCategories = useSelector((state) => state.geral.staticCategories)
 	const selected = useSelector((state) => state.geral.selected)
 
-	return  (
+	return (
 		<StickyBox>
 			<Wrapper>
 				<Logo />
@@ -91,7 +52,6 @@ const Sidebar = () => {
 		</StickyBox>
 	)
 }
-
 
 function renderStatic(categories, selected, setisOpened) {
 	return categories.map((category, i) => (
@@ -109,7 +69,6 @@ function renderStatic(categories, selected, setisOpened) {
 	))
 }
 
-
 function renderGenres(genres, selected, setisOpened) {
 	return genres.map((genre) => (
 		<LinkWrap
@@ -125,5 +84,6 @@ function renderGenres(genres, selected, setisOpened) {
 		</LinkWrap>
 	))
 }
+
 
 export default Sidebar

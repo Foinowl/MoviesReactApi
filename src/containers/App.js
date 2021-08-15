@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import styled from "styled-components"
 import { Router, Switch, Route, Redirect } from "react-router-dom"
+import history from "../history"
+import { useDispatch, useSelector } from "react-redux"
 import { init } from "../actions"
 
-import history from "../history"
-import styled from "styled-components"
-
 import Sidebar from "./Sidebar"
+import MenuMobile from "./MenuMobile"
 import Discover from "./Discover"
 import Genre from "./Genre"
 import Search from "./Search"
 import Movie from "./Movie"
 import Person from "./Person"
 import ShowError from "./ShowError"
-import MenuMobile from "./MenuMobile"
-
 
 import NotFound from "../components/NotFound"
-import Header from "../components/Header"
-import Loader from "../components/Loader"
 import SearchBar from "../components/SearchBar"
-
-import { device } from "../utils/_devices"
+import Loader from "../components/Loader"
 
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { fab } from "@fortawesome/free-brands-svg-icons"
@@ -51,10 +46,8 @@ library.add(
 	faPoll,
 	faHeart,
 	faDotCircle,
-	faDotCircle,
 	fasFaStar,
 	farFaStar,
-	faSearch,
 	faSearch,
 	faChevronRight,
 	faChevronLeft,
@@ -63,30 +56,30 @@ library.add(
 )
 
 const MainWrapper = styled.div`
-  display: flex;
-  flex-direction: ${props => (props.isMobile ? 'column' : 'row')};
-  position: relative;
-  align-items: flex-start;
-  height: 100%;
-  width: 100%;
-  user-select: none;
-`;
+	display: flex;
+	flex-direction: ${(props) => (props.isMobile ? "column" : "row")};
+	background: #000;
+	position: relative;
+	align-items: flex-start;
+	height: 100%;
+	width: 100%;
+	user-select: none;
+`
 
 const ContentWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 	min-height: 100vh;
 	display: flex;
-	fex-direction: column;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	padding: 6rem 4rem;
-
-	@media only screen and ${device.large} {
-		padding: 4rem 2rem;
+	@media ${(props) => props.theme.mediaQueries.larger} {
+		padding: 6rem 3rem;
 	}
-	@media only screen and ${device.large3} {
-		padding: 6rem 2rem;
+	@media ${(props) => props.theme.mediaQueries.large} {
+		padding: 4rem 2rem;
 	}
 `
 
@@ -97,7 +90,6 @@ const SearhBarWrapper = styled.div`
 	padding: 2rem;
 `
 
-
 const App = () => {
 	const dispatch = useDispatch()
 	const isLoading = useSelector((store) => store.geral.loading)
@@ -105,8 +97,7 @@ const App = () => {
 	useEffect(() => {
 		dispatch(init())
 	}, [])
-
-	  const [isMobile, setisMobile] = useState(null)
+	const [isMobile, setisMobile] = useState(null)
 
 	// Set amount of items to show on slider based on the width of the element
 	const changeMobile = () => {
@@ -140,10 +131,9 @@ const App = () => {
 						</>
 					)}
 					<ContentWrapper>
-						<Header />
 						<Switch>
 							<Route
-								path="/"
+								path={process.env.PUBLIC_URL + "/"}
 								exact
 								render={() => (
 									<Redirect
@@ -197,7 +187,7 @@ const App = () => {
 				</MainWrapper>
 			</React.Fragment>
 		</Router>
-	) 
+	)
 }
 
 export default App

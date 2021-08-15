@@ -5,6 +5,7 @@ const LoaderWrapper = styled.div`
 	display: flex;
 	width: 100%;
 	height: 100%;
+	background: #000;
 	min-height: 150px;
 	justify-content: center;
 	align-items: center;
@@ -13,7 +14,7 @@ const LoaderWrapper = styled.div`
 const Loading = styled.div`
 	width: 3rem;
 	height: 3rem;
-	background-color: var(--color-primary-dark);
+	background-color: var(--color-primary-main);
 	box-shadow: -5rem 0rem 0rem var(--color-primary);
 	border-radius: 50%;
 	-webkit-animation: circle_classic 1s ease-in-out infinite alternate;

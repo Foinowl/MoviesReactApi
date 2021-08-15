@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { Helmet } from "react-helmet"
+
+import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components"
 import queryString from "query-string"
+import LazyLoad from "react-lazyload"
 import history from "../history"
+import { Element, animateScroll as scroll } from "react-scroll"
 
 import {
 	getPerson,
@@ -10,17 +14,14 @@ import {
 	getMoviesforPerson,
 	clearMoviesforPerson,
 } from "../actions"
+import SortBy from "../components/ShortBy"
 import NotFound from "../components/NotFound"
 import Header from "../components/Header"
 import Loader from "../components/Loader"
 import MoviesList from "../components/MoviesList"
 import Button from "../components/Button"
 import PersonAvatar from "../svg/person.svg"
-import SortBy from "../components/SortBy"
 import Loading from "../components/Loading"
-
-import LazyLoad from "react-lazyload"
-import { device } from "../utils/_devices"
 
 const Wrapper = styled.div`
 	display: flex;
@@ -176,102 +177,100 @@ const LeftButtons = styled.div`
 	}
 `
 
+const AWrapper = styled.a`
+	text-decoration: none;
+`
+
 const Person = ({ location, match }) => {
 	const person = useSelector((state) => state.person)
 	const geral = useSelector((state) => state.geral)
 	const moviesPerson = useSelector((state) => state.moviesPerson)
 	const dispatch = useDispatch()
 
-	const [loaded, setLoaded] = useState(false)
-	const [error, setError] = useState(false)
-	const { secure_base_url } = geral.base.images
-	const params = queryString.parse(location.search)
-
-	const [option, setOption] = useState({
-		value: "popularity.desc",
-		label: "Popularity",
-	})
-	
-	// When mounts go up
-	useEffect(() => {
-		window.scrollTo({
-			top: (0, 0),
-			behavior: "smooth",
+	  const [loaded, setLoaded] = useState(false)
+		const [error, setError] = useState(false)
+		const { secure_base_url } = geral.base.images
+		const params = queryString.parse(location.search)
+		const [option, setOption] = useState({
+			value: "popularity.desc",
+			label: "Popularity",
 		})
-	}, [])
 
-	// Fetch person when id on url changes
-	useEffect(() => {
-		window.scrollTo({
-			top: (0, 0),
-			behavior: "smooth",
-		})
-		dispatch(getPerson(match.params.id))
-		return () => dispatch(clearPerson())
-	}, [match.params.id])
+		// Fetch person when id on url changes
+		useEffect(() => {
+			scroll.scrollToTop({
+				smooth: true,
+				delay: 500,
+			})
+			dispatch(getPerson(match.params.id))
+			return () => dispatch(clearPerson())
+		}, [match.params.id])
 
-	// Fetch movies where person enters
-	useEffect(() => {
-		dispatch(getMoviesforPerson(match.params.id, params.page, option.value))
-		return () => dispatch(clearMoviesforPerson())
-	}, [params.page, option])
+		// Fetch movies where person enters
+		useEffect(() => {
+			dispatch(getMoviesforPerson(match.params.id, params.page, option.value))
+			return () => dispatch(clearMoviesforPerson())
+		}, [params.page, option])
 
-	// If loading
-	if (person.loading) {
-		return <Loader />
-	}
+		// If loading
+		if (person.loading) {
+			return <Loader />
+		}
 
-	return (
-		<Wrapper>
-			<LazyLoad height={500}>
-				<PersonWrapper>
-					{!loaded ? (
-						<ImgLoading>
-							<Loading />
-						</ImgLoading>
-					) : null}
-					<ImageWrapper style={!loaded ? { display: "none" } : {}}>
-						<MovieImg
-							error={error ? 1 : 0}
-							src={`${secure_base_url}w780${person.profile_path}`}
-							onLoad={() => setLoaded(true)}
-							// If no image, error will occurr, we set error to true
-							// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
-							onError={(e) => {
-								setError(true)
-								if (e.target.src !== `${PersonAvatar}`) {
-									e.target.src = `${PersonAvatar}`
-								}
-							}}
-						/>
-					</ImageWrapper>
-					<PersonDetails>
-						<HeaderWrapper>
-							<Header size="2" title={person.name} subtitle="" />
-						</HeaderWrapper>
-						<DetailsWrapper>
-							{renderDate(person.birthday, person.deathday)}
-						</DetailsWrapper>
-						<Heading>The Biography</Heading>
-						<Text>
-							{person.biography
-								? person.biography
-								: "There is no biography available..."}
-						</Text>
-						<ButtonsWrapper>
-							<LeftButtons>
-								{renderWebsite(person.homepage)}
-								{renderImdb(person.imdb_id)}
-							</LeftButtons>
-							{renderBack()}
-						</ButtonsWrapper>
-					</PersonDetails>
-				</PersonWrapper>
-			</LazyLoad>
-			<Header title="Also enters in" subtitle="movies" />
-			{renderPersonMovies(moviesPerson, secure_base_url, option, setOption)}
-		</Wrapper>
-	)
+		return (
+			<Wrapper>
+				<Helmet>
+					<title>{`${person.name} - Movie Library`}</title>
+				</Helmet>
+				<LazyLoad height={500}>
+					<PersonWrapper>
+						{!loaded ? (
+							<ImgLoading>
+								<Loading />
+							</ImgLoading>
+						) : null}
+						<ImageWrapper style={!loaded ? { display: "none" } : {}}>
+							<MovieImg
+								error={error ? 1 : 0}
+								src={`${secure_base_url}w780${person.profile_path}`}
+								onLoad={() => setLoaded(true)}
+								// If no image, error will occurr, we set error to true
+								// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
+								onError={(e) => {
+									setError(true)
+									if (e.target.src !== `${PersonAvatar}`) {
+										e.target.src = `${PersonAvatar}`
+									}
+								}}
+							/>
+						</ImageWrapper>
+						<PersonDetails>
+							<HeaderWrapper>
+								<Header size="2" title={person.name} subtitle="" />
+							</HeaderWrapper>
+							<DetailsWrapper>
+								{renderDate(person.birthday, person.deathday)}
+							</DetailsWrapper>
+							<Heading>The Biography</Heading>
+							<Text>
+								{person.biography
+									? person.biography
+									: "There is no biography available..."}
+							</Text>
+							<ButtonsWrapper>
+								<LeftButtons>
+									{renderWebsite(person.homepage)}
+									{renderImdb(person.imdb_id)}
+								</LeftButtons>
+								{renderBack()}
+							</ButtonsWrapper>
+						</PersonDetails>
+					</PersonWrapper>
+				</LazyLoad>
+				<Header title="Also enters in" subtitle="movies" />
+				{renderPersonMovies(moviesPerson, secure_base_url, option, setOption)}
+			</Wrapper>
+		)
 }
 
 function renderDate(birthday, deathday) {
@@ -289,7 +288,7 @@ function renderBack() {
 	if (history.action === "PUSH") {
 		return (
 			<div onClick={history.goBack}>
-				<Button title="Go back" solid left icon="arrow-left" />
+				<Button title="Back" solid left icon="arrow-left" />
 			</div>
 		)
 	}
@@ -327,11 +326,13 @@ function renderPersonMovies(moviesPerson, base_url, option, setOption) {
 		return <NotFound title="Sorry!" subtitle={`There are no more movies...`} />
 	} else {
 		return (
-				<React.Fragment>
-					<SortBy option={option} setOption={setOption} />
+			<React.Fragment>
+				<SortBy option={option} setOption={setOption} />
+				<Element name="scroll-to-element">
 					<MoviesList movies={moviesPerson} baseUrl={base_url} />;
-				</React.Fragment>
-			)
+				</Element>
+			</React.Fragment>
+		)
 	}
 }
 

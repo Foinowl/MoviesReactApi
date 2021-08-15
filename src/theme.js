@@ -5,7 +5,7 @@ const theme = {
 		light: "#8e4fe6",
 		lighter: "#b17df9",
 		text: "#fff",
-		link: "#e8e8b3",
+		link: "#fff",
 	},
 	size: {
 		smallest: "25em", //275px

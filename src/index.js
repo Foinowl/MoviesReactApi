@@ -11,6 +11,8 @@ import theme from './theme';
 import GlobalStyle from './globals';
 
 import "../node_modules/react-modal-video/scss/modal-video.scss"
+import "../node_modules/slick-carousel/slick/slick.css"
+import "../node_modules/slick-carousel/slick/slick-theme.css"
 
 import App from './containers/App';
 

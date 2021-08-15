@@ -98,34 +98,35 @@ var styles = {
 }
 
 const MenuMobile = () => {
-	const staticCategories = useSelector(state => state.geral.staticCategories)
-	const genres = useSelector(state => state. geral.genres)
-	const selected = useSelector(state => state.geral.selected)
+	const staticCategories = useSelector((state) => state.geral.staticCategories)
+	const genres = useSelector((state) => state.geral.genres)
+	const selected = useSelector((state) => state.geral.selected)
 
-	const [isOpened, setisOpened] = useState(false)
+	
+  	const [isOpened, setisOpened] = useState(false)
 
 	const isMenuOpen = ({ isOpened }) => {
 		setisOpened(isOpened)
 	}
 
-	return (
-		<React.Fragment>
-			<WrapperStickyBox>
-				<Hamburguer onClick={() => setisOpened(true)}>
-					<Bar />
-					<Bar />
-					<Bar />
-				</Hamburguer>
-				<SearchBar />
-			</WrapperStickyBox>
-			<Menu isOpen={isOpened} onStateChange={isMenuOpen} styles={styles}>
-				<Heading>Discover</Heading>
-				{renderStatic(staticCategories, selected, setisOpened)}
-				<Heading>Genres</Heading>
-				{renderGenres(genres, selected, setisOpened)}
-			</Menu>
-		</React.Fragment>
-	)
+	 return (
+			<React.Fragment>
+				<WrapperStickyBox>
+					<Hamburguer onClick={() => setisOpened(true)}>
+						<Bar />
+						<Bar />
+						<Bar />
+					</Hamburguer>
+					<SearchBar />
+				</WrapperStickyBox>
+				<Menu isOpen={isOpened} onStateChange={isMenuOpen} styles={styles}>
+					<Heading>Discover</Heading>
+					{renderStatic(staticCategories, selected, setisOpened)}
+					<Heading>Genres</Heading>
+					{renderGenres(genres, selected, setisOpened)}
+				</Menu>
+			</React.Fragment>
+		)
 }
 
 function renderStatic(categories, selected, setisOpened) {
