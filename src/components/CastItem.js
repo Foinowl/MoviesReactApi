@@ -27,7 +27,10 @@ const CastItem = ({ person, baseUrl }) => {
 	const [error, setError] = useState(false)
 
 	return (
-		<LinkWrapper loaded={loaded ? 1 : 0} to={`/person/${person.id}`}>
+		<LinkWrapper
+			loaded={loaded ? 1 : 0}
+			to={`${process.env.PUBLIC_URL}/person/${person.id}`}
+		>
 			<MovieImg
 				error={error ? 1 : 0}
 				src={`${baseUrl}w185${person.profile_path}`}
@@ -37,7 +40,7 @@ const CastItem = ({ person, baseUrl }) => {
 				// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
 				onError={(e) => {
 					if (e.target.src !== `${PersonAvatar}`) {
-							e.target.src = `${PersonAvatar}`
+						e.target.src = `${PersonAvatar}`
 					}
 				}}
 			/>

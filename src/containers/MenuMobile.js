@@ -1,23 +1,48 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import StickyBox from "react-sticky-box"
 import { slide as Menu } from "react-burger-menu"
-import { device } from "../utils/_devices"
 
-import Logo from "../components/Logo"
+import SearchBar from "../components/SearchBar"
 import MenuItem from "../components/MenuItem"
 
-const Wrapper = styled.div`
+const WrapperStickyBox = styled(StickyBox)`
+	width: 100%;
+	z-index: 999;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem 2rem;
+	background-color: var(--color-primary-lighter);
+	box-shadow: 0 2px 40px var(--shadow-color);
+`
+
+const Hamburguer = styled.div`
+	border: none;
+	outline: none;
 	display: flex;
 	flex-direction: column;
-	width: 25rem;
-	padding: 2rem;
-	margin-top: 4rem;
-	color: var(--color-primary-dark);
-	border-right: 1px solid var(--border-color);
+	align-self: center;
+	justify-content: space-around;
+	width: 25px;
+	line-height: 1;
+	height: auto;
+	background-color: transparent;
+	cursor: pointer;
 `
+
+const Bar = styled.span`
+	transition: all 0.3s;
+	border-radius: 10px;
+	margin: 2px 0;
+	height: 4px;
+	width: 100%;
+	display: inline-block;
+	background-color: var(--color-primary);
+`
+
 const Heading = styled.h2`
 	font-weight: 700;
 	font-size: 1.1rem;
@@ -36,21 +61,14 @@ const LinkWrap = styled(Link)`
 	margin-bottom: 0.5rem;
 `
 
-
 var styles = {
 	bmBurgerButton: {
-		position: "absolute",
-		width: "30px",
-		height: "25px",
-		left: "20px",
-		top: "20px",
-	},
-	bmBurgerBars: {
-		background: "#263238",
+		display: "none",
 	},
 	bmCrossButton: {
 		height: "24px",
 		width: "24px",
+		marginRight: "1rem",
 	},
 	bmCross: {
 		background: "#fafafa",
@@ -58,9 +76,12 @@ var styles = {
 	bmMenuWrap: {
 		position: "fixed",
 		height: "100%",
+		top: 0,
+		left: 0,
 	},
 	bmMenu: {
-		background: "#161706",
+		background: "#263238",
+		overflowY: "scroll",
 		padding: "2.5em 1.5em",
 	},
 	bmItemList: {
@@ -71,27 +92,41 @@ var styles = {
 		outline: "none",
 	},
 	bmOverlay: {
+		top: 0,
 		background: "rgba(0, 0, 0, 0.3)",
 	},
 }
-const Sidebar = () => {
-	const genres = useSelector((state) => state.geral.genres)
-	const staticCategories = useSelector((state) => state.geral.staticCategories)
-	const selected = useSelector((state) => state.geral.selected)
 
-	return  (
-		<StickyBox>
-			<Wrapper>
-				<Logo />
+const MenuMobile = () => {
+	const staticCategories = useSelector(state => state.geral.staticCategories)
+	const genres = useSelector(state => state. geral.genres)
+	const selected = useSelector(state => state.geral.selected)
+
+	const [isOpened, setisOpened] = useState(false)
+
+	const isMenuOpen = ({ isOpened }) => {
+		setisOpened(isOpened)
+	}
+
+	return (
+		<React.Fragment>
+			<WrapperStickyBox>
+				<Hamburguer onClick={() => setisOpened(true)}>
+					<Bar />
+					<Bar />
+					<Bar />
+				</Hamburguer>
+				<SearchBar />
+			</WrapperStickyBox>
+			<Menu isOpen={isOpened} onStateChange={isMenuOpen} styles={styles}>
 				<Heading>Discover</Heading>
-				{renderStatic(staticCategories, selected)}
+				{renderStatic(staticCategories, selected, setisOpened)}
 				<Heading>Genres</Heading>
-				{renderGenres(genres, selected)}
-			</Wrapper>
-		</StickyBox>
+				{renderGenres(genres, selected, setisOpened)}
+			</Menu>
+		</React.Fragment>
 	)
 }
-
 
 function renderStatic(categories, selected, setisOpened) {
 	return categories.map((category, i) => (
@@ -109,7 +144,6 @@ function renderStatic(categories, selected, setisOpened) {
 	))
 }
 
-
 function renderGenres(genres, selected, setisOpened) {
 	return genres.map((genre) => (
 		<LinkWrap
@@ -126,4 +160,4 @@ function renderGenres(genres, selected, setisOpened) {
 	))
 }
 
-export default Sidebar
+export default MenuMobile

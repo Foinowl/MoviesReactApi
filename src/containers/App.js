@@ -13,10 +13,10 @@ import Search from "./Search"
 import Movie from "./Movie"
 import Person from "./Person"
 import ShowError from "./ShowError"
+import MenuMobile from "./MenuMobile"
 
 
 import NotFound from "../components/NotFound"
-import Home from "../components/Home"
 import Header from "../components/Header"
 import Loader from "../components/Loader"
 import SearchBar from "../components/SearchBar"
@@ -63,14 +63,14 @@ library.add(
 )
 
 const MainWrapper = styled.div`
-	display: flex;
-	position: relative;
-	align-items: flex-start;
-	height: 100%;
-	width: 100%;
-	background: #000;
-	user-select: none;
-`
+  display: flex;
+  flex-direction: ${props => (props.isMobile ? 'column' : 'row')};
+  position: relative;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  user-select: none;
+`;
 
 const ContentWrapper = styled.div`
 	width: 100%;
@@ -83,21 +83,42 @@ const ContentWrapper = styled.div`
 	padding: 6rem 4rem;
 
 	@media only screen and ${device.large} {
-		margin-top: 2rem;
-		padding: 6rem 2rem;
+		padding: 4rem 2rem;
 	}
 	@media only screen and ${device.large3} {
-		padding: 6rem 3rem;
+		padding: 6rem 2rem;
 	}
 `
+
+const SearhBarWrapper = styled.div`
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 2rem;
+`
+
+
 const App = () => {
 	const dispatch = useDispatch()
-	const base = useSelector((store) => store.geral.base)
-	const genres = useSelector((store) => store.geral.genres)
 	const isLoading = useSelector((store) => store.geral.loading)
 
 	useEffect(() => {
 		dispatch(init())
+	}, [])
+
+	  const [isMobile, setisMobile] = useState(null)
+
+	// Set amount of items to show on slider based on the width of the element
+	const changeMobile = () => {
+		window.matchMedia("(max-width: 80em)").matches
+			? setisMobile(true)
+			: setisMobile(false)
+	}
+
+	useEffect(() => {
+		changeMobile()
+		window.addEventListener("resize", changeMobile)
+		return () => window.removeEventListener("resize", changeMobile)
 	}, [])
 
 	return isLoading ? (
@@ -107,29 +128,64 @@ const App = () => {
 	) : (
 		<Router history={history}>
 			<React.Fragment>
-				<MainWrapper>
-					<Sidebar />
+				<MainWrapper isMobile={isMobile}>
+					{isMobile ? (
+						<MenuMobile />
+					) : (
+						<>
+							<Sidebar />
+							<SearhBarWrapper>
+								<SearchBar />
+							</SearhBarWrapper>
+						</>
+					)}
 					<ContentWrapper>
-						<SearchBar />
 						<Header />
 						<Switch>
 							<Route
 								path="/"
 								exact
-								render={() => <Redirect from="/" to="/discover/Popular" />}
+								render={() => (
+									<Redirect
+										from={process.env.PUBLIC_URL + "/"}
+										to={process.env.PUBLIC_URL + "/discover/Popular"}
+									/>
+								)}
 							/>
-							<Route path="/" exact component={Home} />
-							<Route path="/genres/:name" exact component={Genre} />
-							<Route path="/discover/:name" exact component={Discover} />
-							<Route path="/search/:query" exact component={Search} />
-							<Route path="/movie/:id" exact component={Movie} />
-							<Route path="/person/:id" exact component={Person} />
-							<Route path="/error" component={ShowError} />
+							<Route
+								path={process.env.PUBLIC_URL + "/genres/:name"}
+								exact
+								component={Genre}
+							/>
+							<Route
+								path={process.env.PUBLIC_URL + "/discover/:name"}
+								exact
+								component={Discover}
+							/>
+							<Route
+								path={process.env.PUBLIC_URL + "/search/:query"}
+								exact
+								component={Search}
+							/>
+							<Route
+								path={process.env.PUBLIC_URL + "/movie/:id"}
+								exact
+								component={Movie}
+							/>
+							<Route
+								path={process.env.PUBLIC_URL + "/person/:id"}
+								exact
+								component={Person}
+							/>
 							<Route
 								path="/404"
 								component={() => (
 									<NotFound title="Upps!" subtitle={`This doesn't exist...`} />
 								)}
+							/>
+							<Route
+								path={process.env.PUBLIC_URL + "/error"}
+								component={ShowError}
 							/>
 							<Route
 								component={() => (

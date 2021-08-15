@@ -21,6 +21,9 @@ import Button from "../components/Button"
 import Cast from "../components/Cast"
 import Loader from "../components/Loader"
 import MoviesList from "../components/MoviesList"
+import Loading from "../components/Loading"
+
+import LazyLoad from "react-lazyload"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -33,9 +36,6 @@ const Wrapper = styled.div`
 	width: 100%;
 	flex-direction: column;
 
-	@media ${(props) => props.theme.mediaQueries.medium} {
-		align-items: center;
-	}
 `
 
 const MovieWrapper = styled.div`
@@ -124,8 +124,12 @@ const MovieDetails = styled.div`
 `
 
 const ImageWrapper = styled.div`
-	width: 40%;
+	width: 100%;
+	max-width: 40%;
 	flex: 1 1 40%;
+	align-items: center;
+	justify-content: center;
+	display: flex;
 	padding: 4rem;
 
 	@media only screen and ${device.largest} {
@@ -145,16 +149,13 @@ const ImageWrapper = styled.div`
 
 const MovieImg = styled.img`
 	max-height: 100%;
-	height: ${(props) => (props.error ? "58rem" : "auto")};
+	height: ${(props) => (props.error ? "25rem" : "auto")};
 	object-fit: ${(props) => (props.error ? "contain" : "cover")};
-	padding: ${(props) => (props.error ? "4rem" : "")};
+	padding: ${(props) => (props.error ? "2rem" : "")};
 	max-width: 100%;
 	border-radius: 0.8rem;
-	box-shadow: 0rem 2rem 5rem var(--shadow-color-dark);
-
-	@media only screen and ${device.medium} {
-		font-size: 1.2rem;
-	}
+	box-shadow: ${(props) =>
+		props.error ? "none" : "0rem 2rem 5rem var(--shadow-color-dark)"};
 `
 
 const HeaderWrapper = styled.div`
@@ -229,6 +230,20 @@ const LeftButtons = styled.div`
 	}
 `
 
+const ImgLoading = styled.div`
+	width: 100%;
+	max-width: 40%;
+	flex: 1 1 40%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	transition: all 100ms cubic-bezier(0.645, 0.045, 0.355, 1);
+	@media ${(props) => props.theme.mediaQueries.smaller} {
+		height: 28rem;
+	}
+`
+
 const AWrapper = styled.a`
 	text-decoration: none;
 `
@@ -260,7 +275,10 @@ const Movie = ({ match, location }) => {
 			behavior: "smooth",
 		})
 		dispatch(getMovie(match.params.id))
-		return () => dispatch(clearMovie())
+		return () => {
+			dispatch(clearMovie()) 
+			setLoaded(false)
+		}
 	}, [match.params.id])
 
 	// Fetch recommended movies everytime recommendations page change
@@ -275,59 +293,70 @@ const Movie = ({ match, location }) => {
 
 	return (
 		<Wrapper>
-			<MovieWrapper loaded={loaded ? 1 : 0}>
-				<ImageWrapper>
-					<MovieImg
-						error={error ? 1 : 0}
-						src={`${base_url}w780${movie.poster_path}`}
-						onLoad={() => setLoaded(true)}
-						// If no image, error will occurr, we set error to true
-						// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
-						onError={(e) => {
-							setError(true)
-							if (e.target.src !== `${NothingSvg}`) {
-								e.target.src = `${NothingSvg}`
-							}
-						}}
-					/>
-				</ImageWrapper>
-				<MovieDetails>
-					<HeaderWrapper>
-						<Header size="2" title={movie.title} subtitle={movie.tagline} />
-					</HeaderWrapper>
-					<DetailsWrapper>
-						<RatingsWrapper>
-							<Rating number={movie.vote_average / 2} />
-							<RatingNumber>{movie.vote_average} </RatingNumber>
-						</RatingsWrapper>
-						<Info>
-							{renderInfo(
-								movie.spoken_languages,
-								movie.runtime,
-								splitYear(movie.release_date)
-							)}
-						</Info>
-					</DetailsWrapper>
-					<Heading>The Genres</Heading>
-					<LinksWrapper>{renderGenres(movie.genres)}</LinksWrapper>
-					<Heading>The Synopsis</Heading>
-					<Text>
-						{movie.overview
-							? movie.overview
-							: "There is no synopsis available..."}
-					</Text>
-					<Heading>The Cast</Heading>
-					<Cast cast={movie.cast} baseUrl={base_url} />
-					<ButtonsWrapper>
-						<LeftButtons>
-							{renderWebsite(movie.homepage)}
-							{renderImdb(movie.imdb_id)}
-							{renderTrailer(movie.videos.results, modalOpened, setmodalOpened)}
-						</LeftButtons>
-						{renderBack()}
-					</ButtonsWrapper>
-				</MovieDetails>
-			</MovieWrapper>
+			<LazyLoad height={500}>
+				<MovieWrapper>
+					{!loaded ? (
+						<ImgLoading>
+							<Loading />
+						</ImgLoading>
+					) : null}
+					<ImageWrapper style={!loaded ? { display: "none" } : {}}>
+						<MovieImg
+							error={error ? 1 : 0}
+							src={`${secure_base_url}w780${movie.poster_path}`}
+							onLoad={() => setLoaded(true)}
+							// If no image, error will occurr, we set error to true
+							// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
+							onError={(e) => {
+								setError(true)
+								if (e.target.src !== `${NothingSvg}`) {
+									e.target.src = `${NothingSvg}`
+								}
+							}}
+						/>
+					</ImageWrapper>
+					<MovieDetails>
+						<HeaderWrapper>
+							<Header size="2" title={movie.title} subtitle={movie.tagline} />
+						</HeaderWrapper>
+						<DetailsWrapper>
+							<RatingsWrapper>
+								<Rating number={movie.vote_average / 2} />
+								<RatingNumber>{movie.vote_average}</RatingNumber>
+							</RatingsWrapper>
+							<Info>
+								{renderInfo(
+									movie.spoken_languages,
+									movie.runtime,
+									splitYear(movie.release_date)
+								)}
+							</Info>
+						</DetailsWrapper>
+						<Heading>The Genres</Heading>
+						<LinksWrapper>{renderGenres(movie.genres)}</LinksWrapper>
+						<Heading>The Synopsis</Heading>
+						<Text>
+							{movie.overview
+								? movie.overview
+								: "There is no synopsis available..."}
+						</Text>
+						<Heading>The Cast</Heading>
+						<Cast cast={movie.cast} baseUrl={secure_base_url} />
+						<ButtonsWrapper>
+							<LeftButtons>
+								{renderWebsite(movie.homepage)}
+								{renderImdb(movie.imdb_id)}
+								{renderTrailer(
+									movie.videos.results,
+									modalOpened,
+									setmodalOpened
+								)}
+							</LeftButtons>
+							{renderBack()}
+						</ButtonsWrapper>
+					</MovieDetails>
+				</MovieWrapper>
+			</LazyLoad>
 			<Header title="Recommended" subtitle="movies" />
 			{renderRecommended(recommended, base_url)}
 		</Wrapper>
@@ -414,7 +443,10 @@ function renderInfo(languages, time, data) {
 
 function renderGenres(genres) {
 	return genres.map((genre) => (
-		<StyledLink to={`/genres/${genre.name}`} key={genre.id}>
+		<StyledLink
+			to={`${process.env.PUBLIC_URL}/genres/${genre.name}`}
+			key={genre.id}
+		>
 			<FontAwesomeIcon
 				icon="dot-circle"
 				size="1x"

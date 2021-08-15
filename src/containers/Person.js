@@ -16,8 +16,17 @@ import Loader from "../components/Loader"
 import MoviesList from "../components/MoviesList"
 import Button from "../components/Button"
 import PersonAvatar from "../svg/person.svg"
+import SortBy from "../components/SortBy"
+import Loading from "../components/Loading"
 
+import LazyLoad from "react-lazyload"
 import { device } from "../utils/_devices"
+
+const Wrapper = styled.div`
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+`
 
 const PersonWrapper = styled.div`
 	display: flex;
@@ -27,50 +36,41 @@ const PersonWrapper = styled.div`
 	max-width: 120rem;
 	margin: 0 auto;
 	margin-bottom: 7rem;
-	opacity: ${(props) => (props.loaded ? "1" : "0")};
-	visibility: ${(props) => (props.loaded ? "visible" : "hidden")};
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-
-	@media only screen and ${device.largest} {
+	@media ${(props) => props.theme.mediaQueries.largest} {
 		max-width: 105rem;
 	}
-	@media only screen and ${device.larger} {
+	@media ${(props) => props.theme.mediaQueries.larger} {
 		max-width: 110rem;
 		margin-bottom: 6rem;
 	}
-	@media only screen and ${device.large} {
+	@media ${(props) => props.theme.mediaQueries.large} {
 		max-width: 110rem;
 		margin-bottom: 5rem;
 	}
-	@media only screen and ${device.medium} {
+	@media ${(props) => props.theme.mediaQueries.medium} {
 		flex-direction: column;
 		margin-bottom: 3rem;
 	}
-`
-const Wrapper = styled.div`
-	display: flex;
-	width: 100%;
-	flex-direction: column;
 `
 
 const PersonDetails = styled.div`
 	width: 60%;
 	padding: 4rem;
 	flex: 1 1 60%;
-
-	@media only screen and ${device.largest} {
+	@media ${(props) => props.theme.mediaQueries.largest} {
 		padding: 3rem;
 	}
-	@media only screen and ${device.large} {
+	@media ${(props) => props.theme.mediaQueries.large} {
 		padding: 2rem;
 	}
-	@media only screen and ${device.smaller} {
+	@media ${(props) => props.theme.mediaQueries.smaller} {
 		padding: 1rem;
 	}
-	@media only screen and ${device.smallest} {
+	@media ${(props) => props.theme.mediaQueries.smallest} {
 		padding: 0rem;
 	}
-	@media only screen and ${device.medium} {
+	@media ${(props) => props.theme.mediaQueries.medium} {
 		width: 100%;
 		flex: 1 1 100%;
 	}
@@ -80,17 +80,16 @@ const ImageWrapper = styled.div`
 	width: 40%;
 	flex: 1 1 40%;
 	padding: 4rem;
-
-	@media only screen and ${device.largest} {
+	@media ${(props) => props.theme.mediaQueries.largest} {
 		padding: 3rem;
 	}
-	@media only screen and ${device.large} {
+	@media ${(props) => props.theme.mediaQueries.large} {
 		padding: 2rem;
 	}
-	@media only screen and ${device.smaller} {
+	@media ${(props) => props.theme.mediaQueries.smaller} {
 		margin-bottom: 2rem;
 	}
-	@media only screen and ${device.medium} {
+	@media ${(props) => props.theme.mediaQueries.medium} {
 		width: 60%;
 		flex: 1 1 60%;
 	}
@@ -105,9 +104,19 @@ const MovieImg = styled.img`
 	border-radius: 0.8rem;
 	box-shadow: ${(props) =>
 		props.error ? "none" : "0rem 2rem 5rem var(--shadow-color-dark);"};
+`
 
-	@media only screen and ${device.medium} {
-		font-size: 1.2rem;
+const ImgLoading = styled.div`
+	width: 100%;
+	max-width: 40%;
+	flex: 1 1 40%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	transition: all 100ms cubic-bezier(0.645, 0.045, 0.355, 1);
+	@media ${(props) => props.theme.mediaQueries.smaller} {
+		height: 28rem;
 	}
 `
 
@@ -121,6 +130,9 @@ const Heading = styled.h3`
 	text-transform: uppercase;
 	margin-bottom: 1rem;
 	font-size: 1.4rem;
+	@media ${(props) => props.theme.mediaQueries.medium} {
+		font-size: 1.2rem;
+	}
 `
 
 const DetailsWrapper = styled.div`
@@ -144,8 +156,7 @@ const Text = styled.p`
 const ButtonsWrapper = styled.div`
 	display: flex;
 	align-items: center;
-
-	@media only screen and ${device.small} {
+	@media ${(props) => props.theme.mediaQueries.small} {
 		flex-direction: column;
 		align-items: flex-start;
 	}
@@ -154,21 +165,15 @@ const ButtonsWrapper = styled.div`
 const LeftButtons = styled.div`
 	margin-right: auto;
 	display: flex;
+	@media ${(props) => props.theme.mediaQueries.small} {
+		margin-bottom: 2rem;
+	}
 	& > *:not(:last-child) {
 		margin-right: 2rem;
-	}
-
-	@media only screen and ${device.small} {
-		margin-bottom: 2rem;
-
-		@media only screen and ${device.large} {
+		@media ${(props) => props.theme.mediaQueries.large} {
 			margin-right: 1rem;
 		}
 	}
-`
-
-const AWrapper = styled.a`
-	text-decoration: none;
 `
 
 const Person = ({ location, match }) => {
@@ -179,9 +184,14 @@ const Person = ({ location, match }) => {
 
 	const [loaded, setLoaded] = useState(false)
 	const [error, setError] = useState(false)
-	const { base_url } = geral.base.images
+	const { secure_base_url } = geral.base.images
 	const params = queryString.parse(location.search)
 
+	const [option, setOption] = useState({
+		value: "popularity.desc",
+		label: "Popularity",
+	})
+	
 	// When mounts go up
 	useEffect(() => {
 		window.scrollTo({
@@ -202,9 +212,9 @@ const Person = ({ location, match }) => {
 
 	// Fetch movies where person enters
 	useEffect(() => {
-		dispatch(getMoviesforPerson(match.params.id, params.page))
+		dispatch(getMoviesforPerson(match.params.id, params.page, option.value))
 		return () => dispatch(clearMoviesforPerson())
-	}, [params.page])
+	}, [params.page, option])
 
 	// If loading
 	if (person.loading) {
@@ -213,46 +223,53 @@ const Person = ({ location, match }) => {
 
 	return (
 		<Wrapper>
-			<PersonWrapper loaded={loaded ? 1 : 0}>
-				<ImageWrapper>
-					<MovieImg
-						error={error ? 1 : 0}
-						src={`${base_url}w780${person.profile_path}`}
-						onLoad={() => setLoaded(true)}
-						// If no image, error will occurr, we set error to true
-						// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
-						onError={(e) => {
-							setError(true)
-							if (e.target.src !== `${PersonAvatar}`) {
-								e.target.src = `${PersonAvatar}`
-							}
-						}}
-					/>
-				</ImageWrapper>
-				<PersonDetails>
-					<HeaderWrapper>
-						<Header size="2" title={person.name} subtitle="" />
-					</HeaderWrapper>
-					<DetailsWrapper>
-						{renderDate(person.birthday, person.deathday)}
-					</DetailsWrapper>
-					<Heading>The Biography</Heading>
-					<Text>
-						{person.biography
-							? person.biography
-							: "There is no biography available..."}
-					</Text>
-					<ButtonsWrapper>
-						<LeftButtons>
-							{renderWebsite(person.homepage)}
-							{renderImdb(person.imdb_id)}
-						</LeftButtons>
-						{renderBack()}
-					</ButtonsWrapper>
-				</PersonDetails>
-			</PersonWrapper>
+			<LazyLoad height={500}>
+				<PersonWrapper>
+					{!loaded ? (
+						<ImgLoading>
+							<Loading />
+						</ImgLoading>
+					) : null}
+					<ImageWrapper style={!loaded ? { display: "none" } : {}}>
+						<MovieImg
+							error={error ? 1 : 0}
+							src={`${secure_base_url}w780${person.profile_path}`}
+							onLoad={() => setLoaded(true)}
+							// If no image, error will occurr, we set error to true
+							// And only change the src to the nothing svg if it isn't already, to avoid infinite callback
+							onError={(e) => {
+								setError(true)
+								if (e.target.src !== `${PersonAvatar}`) {
+									e.target.src = `${PersonAvatar}`
+								}
+							}}
+						/>
+					</ImageWrapper>
+					<PersonDetails>
+						<HeaderWrapper>
+							<Header size="2" title={person.name} subtitle="" />
+						</HeaderWrapper>
+						<DetailsWrapper>
+							{renderDate(person.birthday, person.deathday)}
+						</DetailsWrapper>
+						<Heading>The Biography</Heading>
+						<Text>
+							{person.biography
+								? person.biography
+								: "There is no biography available..."}
+						</Text>
+						<ButtonsWrapper>
+							<LeftButtons>
+								{renderWebsite(person.homepage)}
+								{renderImdb(person.imdb_id)}
+							</LeftButtons>
+							{renderBack()}
+						</ButtonsWrapper>
+					</PersonDetails>
+				</PersonWrapper>
+			</LazyLoad>
 			<Header title="Also enters in" subtitle="movies" />
-			{renderPersonMovies(moviesPerson, base_url)}
+			{renderPersonMovies(moviesPerson, secure_base_url, option, setOption)}
 		</Wrapper>
 	)
 }
@@ -303,13 +320,18 @@ function renderImdb(id) {
 }
 
 // Render movies where person enters
-function renderPersonMovies(moviesPerson, base_url) {
+function renderPersonMovies(moviesPerson, base_url, option, setOption) {
 	if (moviesPerson.loading) {
 		return <Loader />
 	} else if (moviesPerson.total_results === 0) {
 		return <NotFound title="Sorry!" subtitle={`There are no more movies...`} />
 	} else {
-		return <MoviesList movies={moviesPerson} baseUrl={base_url} />
+		return (
+				<React.Fragment>
+					<SortBy option={option} setOption={setOption} />
+					<MoviesList movies={moviesPerson} baseUrl={base_url} />;
+				</React.Fragment>
+			)
 	}
 }
 
